@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useCardano } from "../../hooks/useCardano";
-import { currencyToSymbol, getAssets, lovelaceToAda, roundLovelace } from "../../utils/assets";
+import {
+  currencyToSymbol,
+  getAssets,
+  lovelaceToAda,
+} from "../../utils/assets";
 
 export const Balance = () => {
   const cardano = useCardano();
@@ -11,21 +15,17 @@ export const Balance = () => {
     if (!cardano) return;
     const isEnabled = await cardano.isEnabled();
 
-    if (!isEnabled) return;
+    if (!isEnabled) {
+      setIsBalanceLoading(false);
+      return;
+    }
     const assets = await getAssets(cardano);
 
     const lovelaceBalance = assets.find((asset) => asset.unit === "lovelace");
     if (!lovelaceBalance) throw Error("no lovelace balance");
 
-    const exponent = lovelaceBalance.quantity.slice(-6);
-    const baseAmount = lovelaceBalance.quantity.slice(
-      0,
-      lovelaceBalance.quantity.length - 6
-    );
+    const adaBalance = lovelaceToAda(lovelaceBalance);
 
-    const adaBalance =
-      parseInt(baseAmount) +
-      lovelaceToAda(roundLovelace(exponent));
     setBalance(adaBalance);
     setIsBalanceLoading(false);
   };
@@ -33,6 +33,8 @@ export const Balance = () => {
   useEffect(() => {
     getBalance();
   }, [cardano.isEnabled]);
+
+  if (!cardano.isEnabled) return null;
 
   return (
     <div>

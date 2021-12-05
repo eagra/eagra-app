@@ -14,7 +14,7 @@ function App() {
         src={logo}
         css={{ marginBottom: 32 }}
       />
-      <WalletConnection />
+      <WalletConnection css={{ marginBottom: 12 }} />
       <Balance />
     </div>
   );

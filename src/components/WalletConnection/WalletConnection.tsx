@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useAddresses } from "../../hooks/useAddresses";
 
 import { useCardano } from "../../hooks/useCardano";
-import { getAssets } from "../../utils/assets";
+import { useRewardAddress } from "../../hooks/useRewardAddress";
 
-export const WalletConnection = () => {
+export const WalletConnection = ({ className }: { className?: string }) => {
   const cardano = useCardano();
+  const walletAddresses = useAddresses();
+  const rewardAddress = useRewardAddress();
 
   const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -26,13 +29,42 @@ export const WalletConnection = () => {
 
   useEffect(() => {
     if (!isEnabled) return;
-    getAssets(cardano).then(console.log);
   }, [isEnabled]);
 
   return (
-    <div>
+    <div className={className}>
       {isLoadingInitial && <span>Loading...</span>}
-      {!isLoadingInitial && isEnabled && <div>Wallet Connected ✨</div>}
+      {!isLoadingInitial && isEnabled && walletAddresses.length > 0 && (
+        <div
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <div>Wallet Connected ✨</div>
+          {walletAddresses.map((walletAddress: any) => (
+            <div
+              key={walletAddress.address}
+              css={{
+                fontSize: 12,
+                maxWidth: 280,
+                lineBreak: "anywhere",
+                textAlign: "center",
+              }}
+            >
+              {walletAddress.address}
+            </div>
+          ))}
+          {rewardAddress?.length && rewardAddress.length > 0 && (
+            <div css={{ marginTop: 12 }}>
+              <div>Reward Address</div>
+              <div css={{ fontSize: 12 }}>{rewardAddress}</div>
+            </div>
+          )}
+        </div>
+      )}
       {!isLoadingInitial && !isEnabled && (
         <button onClick={connectWallet}>Connect Wallet</button>
       )}

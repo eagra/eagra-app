@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "node .esbuild/build",
+    "build": "yarn typecheck && node .esbuild/build",
     "build:prod": "NODE_ENV=production yarn build --minify --analyze",
-    "watch": "node .esbuild/watch"
+    "watch": "node .esbuild/watch",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.7.0",

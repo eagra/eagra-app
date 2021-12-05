@@ -1,6 +1,6 @@
 import { Value } from "@emurgo/cardano-serialization-lib-browser";
 import { CardanoInjectedApi } from "../hooks/useCardano";
-import { bytesToHex, hexToAscii, deserialize } from "./serializer";
+import { bytesToHex, hexToAscii, hexToValue } from "./serializer";
 
 export const LOVELACE_PER_ADA = 1000000;
 
@@ -18,7 +18,7 @@ export const getAssets = async (cardano: CardanoInjectedApi) => {
 
   const rawBalance = await cardano.getBalance();
 
-  const balance = deserialize(rawBalance);
+  const balance = hexToValue(rawBalance);
   const assets = await valueToAssets(balance);
 
   return assets;
@@ -75,8 +75,17 @@ export const valueToAssets = async (value: Value): Promise<Asset[]> => {
   return assets;
 };
 
-export const lovelaceToAda = (lovelace: number) => {
-  return lovelace / LOVELACE_PER_ADA;
+export const lovelaceToAda = (lovelaceBalance: Asset) => {
+  const fraction = lovelaceBalance.quantity.slice(-6);
+  const baseAmount = lovelaceBalance.quantity.slice(
+    0,
+    lovelaceBalance.quantity.length - 6
+  );
+
+  const baseAda = baseAmount.length > 0 ? parseInt(baseAmount) : 0;
+  const fractionAda = roundLovelace(fraction) / LOVELACE_PER_ADA;
+
+  return baseAda + fractionAda;
 };
 
 export const roundLovelace = (exponent: string) => {

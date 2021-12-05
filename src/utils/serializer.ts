@@ -1,4 +1,9 @@
-import { Value } from "@emurgo/cardano-serialization-lib-browser";
+import {
+  Address,
+  BaseAddress,
+  RewardAddress,
+  Value,
+} from "@emurgo/cardano-serialization-lib-browser";
 
 // Convert a hex string to a byte array
 export const hexToBytes = (hex: string) => {
@@ -51,7 +56,11 @@ export const asciiToHex = (ascii: string) => {
   return "0x" + hex;
 };
 
-export const deserialize = (hexValue: string) => {
-  const value = hexToBytes(hexValue);
+export const hexToValue = (hex: string) => {
+  const value = hexToBytes(hex);
   return Value.from_bytes(value);
+};
+
+export const hexToAddress = (hex: string) => {
+  return Address.from_bytes(hexToBytes(hex));
 };

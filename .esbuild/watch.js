@@ -12,21 +12,23 @@ build({
         return console.error(error);
       }
 
+      const time = new Date().toISOString();
       const { errors, warnings } = result;
 
+      console.log(time);
       if (warnings.length > 0) {
-        console.log("⚠️ Compiled with warning:");
+        console.log(`${time}:  ⚠️ Compiled with warning:`);
         console.log(warnings);
         return;
       }
 
       if (errors.length > 0) {
-        console.log("❌ Compiled with errors:");
+        console.log(`${time}:  ❌ Compiled with errors:`);
         console.log(errors);
         return;
       }
 
-      console.log("✨ Compiled successfully!");
+      console.log(`${time}:  ✨ Compiled successfully!`);
     },
   },
 }).catch(() => process.exit(1));

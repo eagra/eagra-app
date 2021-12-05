@@ -1,5 +1,6 @@
 import { Value } from "@emurgo/cardano-serialization-lib-browser";
-import { bytesToHex, hexToAscii } from "./serializer";
+import { CardanoInjectedApi } from "../hooks/useCardano";
+import { bytesToHex, hexToAscii, deserialize } from "./serializer";
 
 export const LOVELACE_PER_ADA = 1000000;
 
@@ -11,6 +12,17 @@ export type Asset = {
 };
 
 export type BaseCurrency = "ada" | "usd" | "eur";
+
+export const getAssets = async (cardano: CardanoInjectedApi) => {
+  if (!cardano) throw new Error("cardano injected api not found");
+
+  const rawBalance = await cardano.getBalance();
+
+  const balance = deserialize(rawBalance);
+  const assets = await valueToAssets(balance);
+
+  return assets;
+};
 
 export const valueToAssets = async (value: Value): Promise<Asset[]> => {
   const assets: Asset[] = [];
@@ -65,6 +77,10 @@ export const valueToAssets = async (value: Value): Promise<Asset[]> => {
 
 export const lovelaceToAda = (lovelace: number) => {
   return lovelace / LOVELACE_PER_ADA;
+};
+
+export const roundLovelace = (exponent: string) => {
+  return Math.round(parseInt(exponent) / 10000) * 10000;
 };
 
 export const currencyToSymbol = (currency: BaseCurrency) => {

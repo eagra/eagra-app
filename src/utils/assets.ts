@@ -1,5 +1,5 @@
 import { Value } from "@emurgo/cardano-serialization-lib-browser";
-import { CardanoInjectedApi } from "../hooks/useCardano";
+import { CardanoApi } from "../hooks/useCardano";
 import { bytesToHex, hexToAscii, hexToValue } from "./serializer";
 
 export const LOVELACE_PER_ADA = 1000000;
@@ -13,7 +13,7 @@ export type Asset = {
 
 export type BaseCurrency = "ada" | "usd" | "eur";
 
-export const getAssets = async (cardano: CardanoInjectedApi) => {
+export const getAssets = async (cardano: CardanoApi) => {
   if (!cardano) throw new Error("cardano injected api not found");
 
   const rawBalance = await cardano.getBalance();

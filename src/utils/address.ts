@@ -4,7 +4,7 @@ import {
   Address,
   BaseAddress,
 } from "@emurgo/cardano-serialization-lib-browser";
-import { CardanoInjectedApi } from "../hooks/useCardano";
+import { CardanoApi } from "../hooks/useCardano";
 import { hexToAddress } from "./serializer";
 
 export type ParsedAddress = {
@@ -24,7 +24,7 @@ export const addressToBaseAddress = (address: Address) => {
 };
 
 export const getAddresses = async (
-  cardano: CardanoInjectedApi
+  cardano: CardanoApi
 ): Promise<ParsedAddress[]> => {
   if (!cardano) throw new Error("cardano injected api not found");
 
@@ -35,7 +35,7 @@ export const getAddresses = async (
 };
 
 export const getRewardAddress = async (
-  cardano: CardanoInjectedApi
+  cardano: CardanoApi
 ): Promise<string> => {
   if (!cardano) throw new Error("cardano injected api not found");
 

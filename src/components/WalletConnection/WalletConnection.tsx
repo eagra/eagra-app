@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useAddresses } from "../../hooks/useAddresses";
 
 import { useCardano } from "../../hooks/useCardano";
@@ -6,35 +5,18 @@ import { useRewardAddress } from "../../hooks/useRewardAddress";
 
 export const WalletConnection = ({ className }: { className?: string }) => {
   const cardano = useCardano();
+
   const walletAddresses = useAddresses();
   const rewardAddress = useRewardAddress();
-
-  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const checkInitialWalletConnection = async () => {
-    const isEnabled = await cardano?.isEnabled();
-    setIsEnabled(isEnabled);
-    setIsLoadingInitial(false);
-  };
 
   const connectWallet = async () => {
     if (!cardano) return;
     await cardano.enable();
   };
 
-  useEffect(() => {
-    checkInitialWalletConnection();
-  }, []);
-
-  useEffect(() => {
-    if (!isEnabled) return;
-  }, [isEnabled]);
-
   return (
     <div className={className}>
-      {isLoadingInitial && <span>Loading...</span>}
-      {!isLoadingInitial && isEnabled && walletAddresses.length > 0 && (
+      {cardano?.isConnected && walletAddresses.length > 0 && (
         <div
           css={{
             display: "flex",
@@ -43,7 +25,12 @@ export const WalletConnection = ({ className }: { className?: string }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <div>Wallet Connected ✨</div>
+          <div>
+            Wallet Connected ✨
+            <span css={{ fontSize: 12, color: "orange" }}>
+              {cardano.networkId === 0 && "(testnet)"}
+            </span>
+          </div>
           {walletAddresses.map((walletAddress: any) => (
             <div
               key={walletAddress.address}
@@ -65,7 +52,7 @@ export const WalletConnection = ({ className }: { className?: string }) => {
           )}
         </div>
       )}
-      {!isLoadingInitial && !isEnabled && (
+      {!cardano?.isConnected && (
         <button onClick={connectWallet}>Connect Wallet</button>
       )}
     </div>

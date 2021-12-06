@@ -7,10 +7,11 @@ export const useAddresses = () => {
   const [walletAddresses, setWalletAddresses] = useState<ParsedAddress[]>([]);
 
   useEffect(() => {
+    if (!cardano) return;
     getAddresses(cardano).then((addresses) => {
       setWalletAddresses(addresses);
     });
-  }, [cardano.isEnabled]);
+  }, [cardano]);
 
   return walletAddresses;
 };

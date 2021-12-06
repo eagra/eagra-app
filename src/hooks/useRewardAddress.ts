@@ -7,6 +7,8 @@ export const useRewardAddress = () => {
   const [rewardAddress, setRewardAddress] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!cardano) return;
+
     getRewardAddress(cardano).then((address) => {
       setRewardAddress(address);
     });

@@ -1,40 +1,32 @@
 import { useEffect, useState } from "react";
-import { useCardano } from "../../hooks/useCardano";
-import {
-  currencyToSymbol,
-  getAssets,
-  lovelaceToAda,
-} from "../../utils/assets";
+import { CardanoApi, useCardano } from "../../hooks/useCardano";
+import { currencyToSymbol, getAssets, lovelaceToAda } from "../../utils/assets";
 
 export const Balance = () => {
   const cardano = useCardano();
   const [balance, setBalance] = useState(0);
-  const [isBalanceLoading, setIsBalanceLoading] = useState(true);
+  const [isBalanceLoading, setIsBalanceLoading] = useState(false);
 
-  const getBalance = async () => {
-    if (!cardano) return;
-    const isEnabled = await cardano.isEnabled();
-
-    if (!isEnabled) {
-      setIsBalanceLoading(false);
-      return;
-    }
+  const getBalance = async (cardano: CardanoApi) => {
     const assets = await getAssets(cardano);
 
     const lovelaceBalance = assets.find((asset) => asset.unit === "lovelace");
     if (!lovelaceBalance) throw Error("no lovelace balance");
 
-    const adaBalance = lovelaceToAda(lovelaceBalance);
-
-    setBalance(adaBalance);
-    setIsBalanceLoading(false);
+    return lovelaceToAda(lovelaceBalance);
   };
 
   useEffect(() => {
-    getBalance();
-  }, [cardano.isEnabled]);
+    if (!cardano || !cardano.isConnected) return;
+    setIsBalanceLoading(true);
+    getBalance(cardano)
+      .then((adaBalance) => {
+        setBalance(adaBalance);
+      })
+      .finally(() => setIsBalanceLoading(false));
+  }, [cardano]);
 
-  if (!cardano.isEnabled) return null;
+  if (!cardano || !cardano.isConnected) return null;
 
   return (
     <div>

@@ -1,2 +1,3 @@
 import { jsx } from "@emotion/react";
-export { jsx };
+import { Fragment } from 'react';
+export { jsx, Fragment };

@@ -1,29 +1,65 @@
 import { useEffect, useState } from "react";
 import { CardanoApi, useCardano } from "../../hooks/useCardano";
-import { currencyToSymbol, getAssets, lovelaceToAda } from "../../utils/assets";
+import {
+  currencyToSymbol,
+  getAssets,
+  getBalance,
+  getCollateral,
+  getLockedBalance,
+  lovelaceToAda,
+} from "../../lib/assets";
 
 export const Balance = () => {
   const cardano = useCardano();
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState("0");
+  const [collateral, setCollateral] = useState("0");
+  const [locked, setLocked] = useState("0");
   const [isBalanceLoading, setIsBalanceLoading] = useState(false);
 
-  const getBalance = async (cardano: CardanoApi) => {
+  const getAdaBalance = async (cardano: CardanoApi) => {
+    const lovelaceBalance = await getBalance(cardano);
+    return lovelaceToAda(lovelaceBalance);
+  };
+
+  const getAdaCollateral = async (cardano: CardanoApi) => {
+    const collateral = await getCollateral(cardano);
+    return lovelaceToAda(collateral);
+  };
+
+  const getAdaLockedBalance = async (cardano: CardanoApi) => {
+    const locked = await getLockedBalance(cardano);
+    return lovelaceToAda(locked);
+  };
+
+  const activeBalance = async (cardano: CardanoApi) => {
+    const [balance, collateral, locked] = await Promise.all([
+      getAdaBalance(cardano),
+      getAdaCollateral(cardano),
+      getAdaLockedBalance(cardano),
+    ]);
+
+    const activeBalance = balance.subtract(collateral).subtract(locked);
+
+    setBalance(activeBalance.trunc(6).toString());
+    setCollateral(collateral.trunc(6).toString());
+    setLocked(locked.trunc(6).toString());
+  };
+
+  const getAssetBalance = async (cardano: CardanoApi) => {
     const assets = await getAssets(cardano);
 
-    const lovelaceBalance = assets.find((asset) => asset.unit === "lovelace");
-    if (!lovelaceBalance) throw Error("no lovelace balance");
-
-    return lovelaceToAda(lovelaceBalance);
+    console.log(assets);
   };
 
   useEffect(() => {
     if (!cardano || !cardano.isConnected) return;
     setIsBalanceLoading(true);
-    getBalance(cardano)
-      .then((adaBalance) => {
-        setBalance(adaBalance);
-      })
-      .finally(() => setIsBalanceLoading(false));
+    activeBalance(cardano).finally(() => setIsBalanceLoading(false));
+  }, [cardano]);
+
+  useEffect(() => {
+    if (!cardano || !cardano.isConnected) return;
+    getAssetBalance(cardano);
   }, [cardano]);
 
   if (!cardano || !cardano.isConnected) return null;
@@ -38,6 +74,14 @@ export const Balance = () => {
           <span css={{ color: "#99ddff" }}>
             {currencyToSymbol("ada")} {balance}
           </span>
+          <>
+            <span css={{ color: "#99ddff" }}>
+              {"  "}+{currencyToSymbol("ada")} {collateral} collateral
+            </span>
+            <span css={{ color: "#99ddff" }}>
+              {"  "}+{currencyToSymbol("ada")} {locked} locked with assets
+            </span>
+          </>
         </span>
       )}
     </div>

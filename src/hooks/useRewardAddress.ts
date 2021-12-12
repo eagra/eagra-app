@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRewardAddress } from "../utils/address";
+import { getRewardAddress } from "../lib/address";
 import { useCardano } from "./useCardano";
 
 export const useRewardAddress = () => {

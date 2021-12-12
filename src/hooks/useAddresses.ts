@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAddresses, ParsedAddress } from "../utils/address";
+import { getAddresses, ParsedAddress } from "../lib/address";
 import { useCardano } from "./useCardano";
 
 export const useAddresses = () => {

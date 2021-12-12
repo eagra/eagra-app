@@ -10,6 +10,8 @@ const sharedConfig = {
   format: "esm",
   // jsx pragma for emotion
   jsxFactory: 'jsx',
+  jsxFragment: 'Fragment',
+  // external plugins
   plugins: [wasmLoader()],
 };
 

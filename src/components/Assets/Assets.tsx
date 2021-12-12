@@ -1,42 +1,84 @@
-import { useEffect, useState } from "react";
-import { CardanoApi, useCardano } from "../../hooks/useCardano";
-import { Asset, getAssets } from "../../lib/assets";
+import useSWR from "swr";
+import { useRewardAddress } from "../../hooks/useRewardAddress";
+import { Asset } from "../../lib/assets";
+
+type WalletData = {
+  addr: string;
+  itn_reward: number;
+  lovelaces: number;
+  reward: number;
+  synched: number;
+  tokens: Asset[];
+  utxos: number;
+  vote_reward: number;
+  withdrawal: number;
+};
+
+const walletEndpoint = "https://pool.pm/wallet";
+const ipfsEndpoint = "https://infura-ipfs.io/ipfs";
+
+const fetcher = (url: string) =>
+  fetch(url)
+    .then((res) => res.json())
+    .catch(console.error);
 
 const AssetComponent = ({ asset }: { asset: Asset }) => {
-  const { quantity, name, policy, fingerprint } = asset;
+  const { quantity, name, policy, fingerprint, metadata } = asset;
+
+  const image = metadata?.image as string | undefined;
+  const imageUrl = image
+    ? image.startsWith("ipfs")
+      ? `${ipfsEndpoint}/${image.split("ipfs://")[1]}`
+      : image
+    : null;
+
   return (
-    <div>
-      <span>
-        {quantity} {name}
-      </span>
-      <div css={{ fontSize: 12 }}>{policy}</div>
-      <div css={{ fontSize: 12 }}>{fingerprint}</div>
+    <div css={{ marginBottom: 32 }}>
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt={`${name} token image`}
+          css={{ marginBottom: 16 }}
+        />
+      )}
+      <div>
+        <span>
+          {quantity} {name}
+        </span>
+        <div css={{ fontSize: 12 }}>{policy}</div>
+        <div css={{ fontSize: 12 }}>{fingerprint}</div>
+      </div>
     </div>
   );
 };
 
 export const Assets = () => {
-  const cardano = useCardano();
-  const [assets, setAssets] = useState<Asset[]>([]);
+  const rewardAddress = useRewardAddress();
 
-  const getAssetBalance = async (cardano: CardanoApi) => {
-    const assets = await getAssets(cardano);
-    setAssets(assets);
-  };
+  const {
+    data: walletData,
+    isValidating,
+    error,
+  } = useSWR<WalletData>(
+    rewardAddress ? `${walletEndpoint}/${rewardAddress}` : null,
+    fetcher,
+    { revalidateOnFocus: false }
+  );
 
-  useEffect(() => {
-    if (!cardano || !cardano.isConnected) return;
-    getAssetBalance(cardano);
-  }, [cardano]);
+  console.log(walletData);
 
-  if (!cardano || !cardano.isConnected) return null;
+  if (isValidating) return <div>Loading...</div>;
+
+  if (error) return <div>Error :(</div>;
 
   return (
     <div>
       <h3>Assets</h3>
-      {assets.map((asset) => (
-        <AssetComponent key={asset.unit} asset={asset} />
-      ))}
+
+      {walletData &&
+        walletData.tokens.map((asset: Asset, index: number) => (
+          <AssetComponent key={index} asset={asset} />
+        ))}
     </div>
   );
 };

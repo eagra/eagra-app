@@ -21,6 +21,7 @@ export type Asset = {
   policy?: string;
   name?: string;
   fingerprint?: string;
+  metadata?: Record<string, unknown>;
 };
 
 export type BaseCurrency = "ada" | "usd" | "eur";
@@ -129,10 +130,5 @@ export const getLockedBalance = async (cardano: CardanoApi) => {
   const minAda = BigNum.from_str(MIN_UTXO.toString());
   const lockedAda = min_ada_required(balance, minAda).to_str();
 
-  console.log({
-    balance: balance.coin().to_str(),
-    minAda: minAda.to_str(),
-    lockedAda,
-  });
   return new BigFloat(lockedAda);
 };

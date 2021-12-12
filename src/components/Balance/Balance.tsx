@@ -45,21 +45,10 @@ export const Balance = () => {
     setLocked(locked.trunc(6).toString());
   };
 
-  const getAssetBalance = async (cardano: CardanoApi) => {
-    const assets = await getAssets(cardano);
-
-    console.log(assets);
-  };
-
   useEffect(() => {
     if (!cardano || !cardano.isConnected) return;
     setIsBalanceLoading(true);
     activeBalance(cardano).finally(() => setIsBalanceLoading(false));
-  }, [cardano]);
-
-  useEffect(() => {
-    if (!cardano || !cardano.isConnected) return;
-    getAssetBalance(cardano);
   }, [cardano]);
 
   if (!cardano || !cardano.isConnected) return null;
@@ -74,14 +63,14 @@ export const Balance = () => {
           <span css={{ color: "#99ddff" }}>
             {currencyToSymbol("ada")} {balance}
           </span>
-          <>
-            <span css={{ color: "#99ddff" }}>
+          <div>
+            <span css={{ color: "#99ddff", fontSize: 12 }}>
               {"  "}+{currencyToSymbol("ada")} {collateral} collateral
             </span>
-            <span css={{ color: "#99ddff" }}>
+            <span css={{ color: "#99ddff", fontSize: 12 }}>
               {"  "}+{currencyToSymbol("ada")} {locked} locked with assets
             </span>
-          </>
+          </div>
         </span>
       )}
     </div>

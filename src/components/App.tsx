@@ -1,5 +1,6 @@
 import logo from "../assets/cardano-logo.svg";
 import "./App.css";
+import { Assets } from "./Assets/Assets";
 import { Balance } from "./Balance/Balance";
 import { WalletConnection } from "./WalletConnection/WalletConnection";
 
@@ -16,6 +17,7 @@ function App() {
       />
       <WalletConnection css={{ marginBottom: 12 }} />
       <Balance />
+      <Assets />
     </div>
   );
 }

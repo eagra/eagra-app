@@ -61,9 +61,9 @@ export const valueToAssets = (value: Value): Asset[] => {
         bytesToHex(policy.to_bytes()) + bytesToHex(policyAsset.name());
 
       const _policy = unit.slice(0, 56);
-      const name = hexToAscii(unit.slice(56));
+      const _name = unit.slice(56);
 
-      const fingerprint = getAssetFingerprint(_policy, name);
+      const fingerprint = getAssetFingerprint(_policy, _name);
 
       if (!quantity) throw new Error(`quantity is required for asset ${unit}`);
 
@@ -71,7 +71,7 @@ export const valueToAssets = (value: Value): Asset[] => {
         unit,
         quantity: quantity?.to_str(),
         policy: _policy,
-        name,
+        name: hexToAscii(_name),
         fingerprint,
       });
     }

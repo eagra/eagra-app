@@ -15,7 +15,7 @@ export const WalletConnection = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={className}>
+    <div className={className} css={{ color: "white" }}>
       {cardano?.isConnected && walletAddresses.length > 0 && (
         <div
           css={{

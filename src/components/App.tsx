@@ -1,24 +1,14 @@
-import logo from "../assets/cardano-logo.svg";
-import "./App.css";
-import { Assets } from "./Assets/Assets";
-import { Balance } from "./Balance/Balance";
-import { WalletConnection } from "./WalletConnection/WalletConnection";
+import { ChakraProvider } from "@chakra-ui/react";
+import { CardanoProvider } from "../hooks/useCardano";
+import { Wallet } from "./Wallet/Wallet";
 
 function App() {
   return (
-    <div className="App App-header">
-      <div css={{ fontSize: 32, marginBottom: 64 }}>Eagra Wallet</div>
-      <img
-        className="App-logo"
-        width="64"
-        height="64"
-        src={logo}
-        css={{ marginBottom: 32 }}
-      />
-      <WalletConnection css={{ marginBottom: 12 }} />
-      <Balance />
-      <Assets />
-    </div>
+    <ChakraProvider>
+      <CardanoProvider>
+        <Wallet />
+      </CardanoProvider>
+    </ChakraProvider>
   );
 }
 

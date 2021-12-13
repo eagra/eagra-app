@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CardanoApi, useCardano } from "../../hooks/useCardano";
+import { InfoIcon } from "@chakra-ui/icons";
 import {
   currencyToSymbol,
   getAssets,
@@ -8,6 +9,7 @@ import {
   getLockedBalance,
   lovelaceToAda,
 } from "../../lib/assets";
+import { Tooltip } from "@chakra-ui/react";
 
 export const Balance = () => {
   const cardano = useCardano();
@@ -54,23 +56,25 @@ export const Balance = () => {
   if (!cardano || !cardano.isConnected) return null;
 
   return (
-    <div>
+    <div css={{ color: "white" }}>
       {isBalanceLoading ? (
         "Loading..."
       ) : (
         <span>
           Balance:{" "}
           <span css={{ color: "#99ddff" }}>
-            {currencyToSymbol("ada")} {balance}
+            {currencyToSymbol("ada")}
+            {balance}
+            <Tooltip
+              label={`+${currencyToSymbol(
+                "ada"
+              )}${collateral} collateral and ${currencyToSymbol(
+                "ada"
+              )}${locked} locked with assets`}
+            >
+              <InfoIcon />
+            </Tooltip>
           </span>
-          <div>
-            <span css={{ color: "#99ddff", fontSize: 12 }}>
-              {"  "}+{currencyToSymbol("ada")} {collateral} collateral
-            </span>
-            <span css={{ color: "#99ddff", fontSize: 12 }}>
-              {"  "}+{currencyToSymbol("ada")} {locked} locked with assets
-            </span>
-          </div>
         </span>
       )}
     </div>

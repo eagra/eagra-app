@@ -1,3 +1,4 @@
+import { Heading } from "@chakra-ui/layout";
 import useSWR from "swr";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
 import { Asset } from "../../lib/assets";
@@ -33,7 +34,7 @@ const AssetComponent = ({ asset }: { asset: Asset }) => {
     : null;
 
   return (
-    <div css={{ marginBottom: 32 }}>
+    <div css={{ marginBottom: 32, color: "white", width: "20vw" }}>
       {imageUrl && (
         <img
           src={imageUrl}
@@ -73,12 +74,17 @@ export const Assets = () => {
 
   return (
     <div>
-      <h3>Assets</h3>
-
-      {walletData &&
-        walletData.tokens.map((asset: Asset, index: number) => (
-          <AssetComponent key={index} asset={asset} />
-        ))}
+      <Heading as="h2" size="xl" color="white" marginTop="8" marginBottom="4">
+        Assets
+      </Heading>
+      <section
+        css={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}
+      >
+        {walletData &&
+          walletData.tokens.map((asset: Asset, index: number) => (
+            <AssetComponent key={index} asset={asset} />
+          ))}
+      </section>
     </div>
   );
 };

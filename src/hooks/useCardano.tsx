@@ -20,9 +20,7 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
     getCardanoFromWindow()
   );
 
-  const onNetworkChange = (networkId: number) => {
-    console.log("network:", networkId === 0 ? "testnet" : "mainnet");
-
+  const refreshNetwork = () => {
     const api = getCardanoFromWindow();
     api.getNetworkId().then((newNetworkId: CardanoNetworkId) => {
       setCardano({
@@ -30,6 +28,15 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
         networkId: newNetworkId,
       });
     });
+  };
+
+  const onNetworkChange = (networkId: number) => {
+    console.log("network:", networkId === 0 ? "testnet" : "mainnet");
+    refreshNetwork();
+  };
+
+  const onAccountChange = (_account: string) => {
+    refreshNetwork();
   };
 
   const initApi = async (cardano: CardanoApi | undefined) => {
@@ -43,6 +50,11 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     if (!cardano) return;
     return cardano.onNetworkChange(onNetworkChange);
+  }, []);
+
+  useEffect(() => {
+    if (!cardano) return;
+    return cardano.onAccountChange(onAccountChange);
   }, []);
 
   useEffect(() => {

@@ -1,9 +1,8 @@
-import { useAddresses } from "../../hooks/useAddresses";
+import { useCardano } from "../../../hooks/useCardano";
+import { useAddresses } from "../../../hooks/useAddresses";
+import { useRewardAddress } from "../../../hooks/useRewardAddress";
 
-import { useCardano } from "../../hooks/useCardano";
-import { useRewardAddress } from "../../hooks/useRewardAddress";
-
-export const WalletConnection = ({ className }: { className?: string }) => {
+export const Connection = ({ className }: { className?: string }) => {
   const cardano = useCardano();
 
   const walletAddresses = useAddresses();

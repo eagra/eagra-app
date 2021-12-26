@@ -4,6 +4,7 @@ const sharedConfig = require("./sharedConfig");
 // build the source
 build({
   ...sharedConfig,
+  minify: false,
   metafile: true,
   sourcemap: true,
   watch: {

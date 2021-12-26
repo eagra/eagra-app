@@ -1,10 +1,12 @@
 import { Box, Heading, Text } from "@chakra-ui/layout";
-import { Assets } from "../Assets/Assets";
-import { Balance } from "../Balance/Balance";
 import { Navbar } from "../Navbar/Navbar";
-import { WalletConnection } from "../WalletConnection/WalletConnection";
+import { Outlet } from "react-router-dom";
+import { Connection } from "./Connection/Connection";
+import { someTest } from "../../lib/assets";
 
 export const Wallet = () => {
+  someTest();
+
   return (
     <Box
       as="main"
@@ -15,6 +17,7 @@ export const Wallet = () => {
         flexDirection: "column",
         alignItems: "center",
         minHeight: "100vh",
+        position: "relative",
       }}
     >
       <Navbar />
@@ -22,11 +25,11 @@ export const Wallet = () => {
       <Box
         as="section"
         bgColor="teal.800"
-        marginTop="8"
+        marginTop="4"
         p="12"
         borderRadius="md"
         css={{
-          width: "80%",
+          width: "96%",
           height: 120,
           display: "flex",
           justifyContent: "center",
@@ -45,10 +48,8 @@ export const Wallet = () => {
           on Cardano
         </Text>
       </Box>
-
-      <WalletConnection />
-      <Balance />
-      <Assets />
+      <Connection />
+      <Outlet />
     </Box>
   );
 };

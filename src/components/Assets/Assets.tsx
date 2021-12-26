@@ -1,4 +1,4 @@
-import { Heading } from "@chakra-ui/layout";
+import { Heading, Text } from "@chakra-ui/layout";
 import useSWR from "swr";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
 import { Asset } from "../../lib/assets";
@@ -66,11 +66,8 @@ export const Assets = () => {
     { revalidateOnFocus: false }
   );
 
-  console.log(walletData);
-
-  if (isValidating) return <div>Loading...</div>;
-
-  if (error) return <div>Error :(</div>;
+  if (isValidating) return <Text color="white">Loading...</Text>;
+  if (error) return <Text color="white">Error :(</Text>;
 
   return (
     <div>

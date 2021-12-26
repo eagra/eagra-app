@@ -1,9 +1,4 @@
-import {
-  Address,
-  BaseAddress,
-  RewardAddress,
-  Value,
-} from "@emurgo/cardano-serialization-lib-browser";
+import { Address, Value } from "@emurgo/cardano-serialization-lib-browser";
 
 // Convert a hex string to a byte array
 export const hexToBytes = (hex: string) => {

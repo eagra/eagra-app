@@ -3,6 +3,9 @@ import {
   Value,
   min_ada_required,
   BigNum,
+  StakeDelegation,
+  StakeCredential,
+  PoolParams,
 } from "@emurgo/cardano-serialization-lib-browser";
 import AssetFingerprint from "@emurgo/cip14-js";
 import { CardanoApi } from "../hooks/useCardano";
@@ -26,6 +29,15 @@ export type Asset = {
 
 export type BaseCurrency = "ada" | "usd" | "eur";
 
+export const someTest = () => {
+  const bytes = hexToBytes(
+    "4bafc2b9423aa741faedcf0fd27cab2387de0e0bbb7c7d98d9b0f421"
+  );
+  console.log({ bytes });
+  const asd = PoolParams.from_bytes(bytes);
+  console.log(asd);
+};
+
 // assets
 export const getAssets = async (cardano: CardanoApi) => {
   if (!cardano) throw new Error("cardano injected api not found");
@@ -36,11 +48,11 @@ export const getAssets = async (cardano: CardanoApi) => {
   return await valueToAssets(balance);
 };
 
-export const valueToAssets = (value: Value): Asset[] => {
+export const valueToAssets = (balance: Value): Asset[] => {
   const assets: Asset[] = [];
 
   // if assets not detected, return empty array;
-  const multiasset = value.multiasset();
+  const multiasset = balance.multiasset();
   if (!multiasset) return assets;
 
   const multiAssets = multiasset.keys();
@@ -116,6 +128,8 @@ export const currencyToSymbol = (currency: BaseCurrency) => {
 // collateral
 export const getCollateral = async (cardano: CardanoApi) => {
   const [rawCollateral] = await cardano.getCollateral();
+  if (!rawCollateral) return new BigFloat(0);
+
   const collateral = hexToBytes(rawCollateral);
 
   const tx = TransactionUnspentOutput.from_bytes(collateral);

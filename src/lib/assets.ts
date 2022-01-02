@@ -29,15 +29,6 @@ export type Asset = {
 
 export type BaseCurrency = "ada" | "usd" | "eur";
 
-export const someTest = () => {
-  const bytes = hexToBytes(
-    "4bafc2b9423aa741faedcf0fd27cab2387de0e0bbb7c7d98d9b0f421"
-  );
-  console.log({ bytes });
-  const asd = PoolParams.from_bytes(bytes);
-  console.log(asd);
-};
-
 // assets
 export const getAssets = async (cardano: CardanoApi) => {
   if (!cardano) throw new Error("cardano injected api not found");

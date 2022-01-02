@@ -2,11 +2,8 @@ import { Box, Heading, Text } from "@chakra-ui/layout";
 import { Navbar } from "../Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { Connection } from "./Connection/Connection";
-import { someTest } from "../../lib/assets";
 
 export const Wallet = () => {
-  someTest();
-
   return (
     <Box
       as="main"

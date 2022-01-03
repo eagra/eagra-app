@@ -6,7 +6,9 @@
     "build": "yarn typecheck && node .esbuild/build",
     "build:prod": "NODE_ENV=production yarn build --minify --analyze",
     "watch": "node .esbuild/watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "graphql:schema:download": "apollo schema:download --endpoint=https://graphql-api.mainnet.dandelion.link src/graphql/schema.json",
+    "graphql:types:generate": "apollo codegen:generate --localSchemaFile=src/graphql/schema.json --target=typescript"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",
@@ -17,6 +19,7 @@
     "@emurgo/cip14-js": "^3.0.1",
     "buffer": "^6.0.3",
     "framer-motion": "^4",
+    "graphql-request": "^3.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^6.2.1",
@@ -26,8 +29,10 @@
   "devDependencies": {
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "apollo": "^2.33.9",
     "esbuild": "^0.14.2",
     "esbuild-plugin-wasm": "^1.0.0",
+    "graphql-tag": "^2.12.6",
     "typescript": "^4.5.2",
     "yargs-parser": "^21.0.0"
   }

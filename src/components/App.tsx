@@ -3,7 +3,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { CardanoProvider } from "../hooks/useCardano";
 import { Assets } from "./Assets/Assets";
 import { Balance } from "./Balance/Balance";
-import { Delegate } from "./Delegate/Delegate";
+import { Staking } from "./Staking/Staking";
 import { Wallet } from "./Wallet/Wallet";
 
 const App = () => (
@@ -14,7 +14,7 @@ const App = () => (
           <Route path="/" element={<Wallet />}>
             <Route index element={<Balance />} />
             <Route path="assets" element={<Assets />} />
-            <Route path="delegate" element={<Delegate />} />
+            <Route path="staking" element={<Staking />} />
           </Route>
         </Routes>
       </Router>

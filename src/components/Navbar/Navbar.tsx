@@ -27,7 +27,7 @@ export const Navbar = () => {
   return (
     <Box
       as="nav"
-      p="1"
+      p="4"
       css={{
         width: expanded ? "100%" : "96%",
         height: 54,
@@ -43,15 +43,20 @@ export const Navbar = () => {
       transition="ease-in-out .06s"
     >
       <img className="App-logo" src={logo} height="46" width="46" />
-      <Button as="div">
-        <Link to="/">Wallet</Link>
-      </Button>
-      <Button as="div">
-        <Link to="/assets">Assets</Link>
-      </Button>
-      <Button as="div">
-        <Link to="/delegate">Delegate</Link>
-      </Button>
+
+      <Box>
+        <Link to="/">
+          <Button marginRight="4" as="div">Wallet</Button>
+        </Link>
+
+        <Link to="/assets">
+          <Button marginRight="4" as="div">Assets</Button>
+        </Link>
+
+        <Link to="/staking">
+          <Button as="div">Staking</Button>
+        </Link>
+      </Box>
     </Box>
   );
 };

@@ -2,6 +2,7 @@ import { Heading, Text } from "@chakra-ui/layout";
 import useSWR from "swr";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
 import { Asset } from "../../lib/assets";
+import { defaultFetcher } from "../../utils/fetchers";
 
 type WalletData = {
   addr: string;
@@ -17,11 +18,6 @@ type WalletData = {
 
 const walletEndpoint = "https://pool.pm/wallet";
 const ipfsEndpoint = "https://infura-ipfs.io/ipfs";
-
-const fetcher = (url: string) =>
-  fetch(url)
-    .then((res) => res.json())
-    .catch(console.error);
 
 const AssetComponent = ({ asset }: { asset: Asset }) => {
   const { quantity, name, policy, fingerprint, metadata } = asset;
@@ -62,7 +58,7 @@ export const Assets = () => {
     error,
   } = useSWR<WalletData>(
     rewardAddress ? `${walletEndpoint}/${rewardAddress}` : null,
-    fetcher,
+    defaultFetcher,
     { revalidateOnFocus: false }
   );
 

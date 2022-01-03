@@ -1,16 +1,30 @@
 import { useCardano } from "../../../hooks/useCardano";
 import { useAddresses } from "../../../hooks/useAddresses";
-import { useRewardAddress } from "../../../hooks/useRewardAddress";
+import { Tooltip, Text, Button } from "@chakra-ui/react";
+import { CopyIcon } from "@chakra-ui/icons";
+import { useToast } from "@chakra-ui/react";
 
 export const Connection = ({ className }: { className?: string }) => {
-  const cardano = useCardano();
+  const { cardano, init } = useCardano();
+  const toast = useToast();
 
   const walletAddresses = useAddresses();
-  const rewardAddress = useRewardAddress();
 
   const connectWallet = async () => {
     if (!cardano) return;
-    await cardano.enable();
+    try {
+      await cardano.enable();
+      init();
+    } catch (err) {
+      toast({
+        title: "Something went wrong",
+        description:
+          "We could not connect to your wallet. Make sure that you accept the prompt from your wallet extension",
+        status: "error",
+        duration: 6000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -24,35 +38,21 @@ export const Connection = ({ className }: { className?: string }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <div>
-            Wallet Connected ✨
-            <span css={{ fontSize: 12, color: "orange" }}>
+          <Text>
+            ✨ Wallet Connected{" "}
+            <Tooltip label={walletAddresses[0].address}>
+              <CopyIcon />
+            </Tooltip>
+            <Text as="span" color="orange">
               {cardano.networkId === 0 && "(testnet)"}
-            </span>
-          </div>
-          {walletAddresses.map((walletAddress: any) => (
-            <div
-              key={walletAddress.address}
-              css={{
-                fontSize: 12,
-                maxWidth: 280,
-                lineBreak: "anywhere",
-                textAlign: "center",
-              }}
-            >
-              {walletAddress.address}
-            </div>
-          ))}
-          {rewardAddress?.length && rewardAddress.length > 0 && (
-            <div css={{ marginTop: 12 }}>
-              <div>Reward Address</div>
-              <div css={{ fontSize: 12 }}>{rewardAddress}</div>
-            </div>
-          )}
+            </Text>
+          </Text>
         </div>
       )}
       {!cardano?.isConnected && (
-        <button onClick={connectWallet}>Connect Wallet</button>
+        <Button color="black" onClick={connectWallet}>
+          Connect Wallet
+        </Button>
       )}
     </div>
   );

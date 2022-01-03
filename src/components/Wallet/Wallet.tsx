@@ -24,6 +24,7 @@ export const Wallet = () => {
         bgColor="teal.800"
         marginTop="4"
         p="12"
+        position="relative"
         borderRadius="md"
         css={{
           width: "96%",
@@ -44,8 +45,8 @@ export const Wallet = () => {
           </Text>{" "}
           on Cardano
         </Text>
+        <Connection css={{ position: "absolute", top: 4, right: 8 }} />
       </Box>
-      <Connection />
       <Outlet />
     </Box>
   );

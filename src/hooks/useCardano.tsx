@@ -9,7 +9,15 @@ const getCardanoFromWindow = () => {
   return (window as InjectedWindow).cardano;
 };
 
-const CardanoContext = createContext<CardanoApi | undefined>({});
+const CardanoContext = createContext<{
+  cardano: CardanoApi | undefined;
+  refresh: () => void;
+  init: () => void | Promise<void>;
+}>({
+  cardano: undefined,
+  refresh: () => console.log("not implemented"),
+  init: () => console.log("not implemented"),
+});
 
 export const useCardano = () => {
   return useContext(CardanoContext);
@@ -22,7 +30,9 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
 
   const refreshNetwork = () => {
     const api = getCardanoFromWindow();
+    console.log({ api });
     api.getNetworkId().then((newNetworkId: CardanoNetworkId) => {
+      console.log({ newNetworkId });
       setCardano({
         ...api,
         networkId: newNetworkId,
@@ -62,7 +72,9 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
   }, [cardano?.isConnected]);
 
   return (
-    <CardanoContext.Provider value={cardano}>
+    <CardanoContext.Provider
+      value={{ cardano, refresh: refreshNetwork, init: () => initApi(cardano) }}
+    >
       {children}
     </CardanoContext.Provider>
   );

@@ -3,7 +3,7 @@ import { getAddresses, ParsedAddress } from "../lib/address";
 import { useCardano } from "./useCardano";
 
 export const useAddresses = () => {
-  const cardano = useCardano();
+  const { cardano } = useCardano();
   const [walletAddresses, setWalletAddresses] = useState<ParsedAddress[]>([]);
 
   useEffect(() => {

@@ -3,8 +3,10 @@ import { Box } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import logo from "../../assets/cardano-logo.svg";
+import { useCardano } from "../../hooks/useCardano";
 
 export const Navbar = () => {
+  const { cardano } = useCardano();
   const [expanded, setExpanded] = useState(false);
 
   const scrollListener = useCallback(() => {
@@ -41,22 +43,29 @@ export const Navbar = () => {
       bgColor="teal.400"
       borderRadius="md"
       transition="ease-in-out .06s"
+      zIndex="1"
     >
       <img className="App-logo" src={logo} height="46" width="46" />
 
-      <Box>
-        <Link to="/">
-          <Button marginRight="4" as="div">Wallet</Button>
-        </Link>
+      {cardano?.isConnected && (
+        <Box>
+          <Link to="/">
+            <Button marginRight="4" as="div">
+              Wallet
+            </Button>
+          </Link>
 
-        <Link to="/assets">
-          <Button marginRight="4" as="div">Assets</Button>
-        </Link>
+          <Link to="/assets">
+            <Button marginRight="4" as="div">
+              Assets
+            </Button>
+          </Link>
 
-        <Link to="/staking">
-          <Button as="div">Staking</Button>
-        </Link>
-      </Box>
+          <Link to="/staking">
+            <Button as="div">Staking</Button>
+          </Link>
+        </Box>
+      )}
     </Box>
   );
 };

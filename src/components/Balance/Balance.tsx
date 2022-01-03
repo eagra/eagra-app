@@ -3,16 +3,18 @@ import { CardanoApi, useCardano } from "../../hooks/useCardano";
 import { InfoIcon } from "@chakra-ui/icons";
 import {
   currencyToSymbol,
-  getAssets,
   getBalance,
   getCollateral,
   getLockedBalance,
   lovelaceToAda,
 } from "../../lib/assets";
-import { Tooltip } from "@chakra-ui/react";
+import { Tooltip, Text, Box } from "@chakra-ui/react";
+import { useRewardAddress } from "../../hooks/useRewardAddress";
 
 export const Balance = () => {
-  const cardano = useCardano();
+  const { cardano } = useCardano();
+  const rewardAddress = useRewardAddress();
+
   const [balance, setBalance] = useState("0");
   const [collateral, setCollateral] = useState("0");
   const [locked, setLocked] = useState("0");
@@ -56,27 +58,34 @@ export const Balance = () => {
   if (!cardano || !cardano.isConnected) return null;
 
   return (
-    <div css={{ color: "white" }}>
+    <Box css={{ color: "white", width: "100%" }} p="6">
       {isBalanceLoading ? (
         "Loading..."
       ) : (
-        <span>
-          Balance:{" "}
-          <span css={{ color: "#99ddff" }}>
-            {currencyToSymbol("ada")}
-            {balance}
-            <Tooltip
-              label={`+${currencyToSymbol(
-                "ada"
-              )}${collateral} collateral and ${currencyToSymbol(
-                "ada"
-              )}${locked} locked with assets`}
-            >
-              <InfoIcon />
-            </Tooltip>
-          </span>
-        </span>
+        <Box marginTop="4">
+          <Text fontSize="2xl">
+            Available Balance:{" "}
+            <span css={{ color: "#99ddff" }}>
+              {currencyToSymbol("ada")}
+              {balance}{" "}
+            </span>
+          </Text>
+          <Tooltip
+            label={`+${currencyToSymbol(
+              "ada"
+            )}${collateral} collateral and ${currencyToSymbol(
+              "ada"
+            )}${locked} locked with assets`}
+          >
+            <InfoIcon />
+          </Tooltip>
+          {rewardAddress?.length && rewardAddress.length > 0 && (
+            <div css={{ marginTop: 12 }}>
+              <Text>Reward Address: {rewardAddress}</Text>
+            </div>
+          )}
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };

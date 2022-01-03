@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Heading, Text } from "@chakra-ui/layout";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
 import { usePools } from "../../hooks/usePools";
@@ -15,39 +15,41 @@ const usePoolData = (poolUrl: string | null) => {
 };
 
 const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
-  const { data } = usePoolData(pool.url);
+  const { data, error } = usePoolData(pool.url);
 
+  if (!data || error) return null;
   return (
-    <div key={pool.id}>
-      {/* <Text>{pool.id}</Text>
-      <Text>{pool.hash}</Text>
-      <Text>{pool.pledge}</Text> */}
-      {data && (
-        <Box css={{ border: "1px solid white" }} p="1" borderRadius="sm">
-          <Text>{data.name}</Text>
-          <Text>{data.ticker}</Text>
-          <Text>{data.description}</Text>
-        </Box>
-      )}
-    </div>
+    <Box bgColor="teal.800" p="2" borderRadius="md">
+      <Text>{data.name}</Text>
+      <Text>{data.ticker}</Text>
+      <Text>{data.description}</Text>
+    </Box>
   );
 };
 
 export const Pools = () => {
   const [page, setPage] = useState(1);
-  const { pools, isValidating, error } = usePools(page - 1, 2);
+  const { pools, isValidating, error } = usePools(page - 1, 20);
 
   if (isValidating) return <Text>Loading...</Text>;
   if (error || !pools || pools.length === 0) return <Text>Error</Text>;
 
   return (
     <>
-      <Text>Stake Pools</Text>
-      {pools.map((pool) => {
-        if (!pool) return null;
-        return <Pool pool={pool} key={pool.id} />;
-      })}
-      <Box d="flex" flexDir="row">
+      <Text size="md" marginTop="4" marginBottom="2">Stake Pools</Text>
+      <Box
+        css={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gap: "16px",
+        }}
+      >
+        {pools.map((pool) => {
+          if (!pool) return null;
+          return <Pool pool={pool} key={pool.id} />;
+        })}
+      </Box>
+      <Box d="flex" flexDir="row" marginTop="4">
         <Button
           color="black"
           onClick={() => setPage((currentPage) => currentPage - 1)}
@@ -70,7 +72,7 @@ export const Pools = () => {
 
 export const Staking = () => {
   return (
-    <Box color="white">
+    <Box color="white" padding="6">
       <Heading>Delegate</Heading>
       <Pools />
     </Box>

@@ -4,14 +4,15 @@ import { CardanoProvider } from "../hooks/useCardano";
 import { Assets } from "./Assets/Assets";
 import { Balance } from "./Balance/Balance";
 import { Staking } from "./Staking/Staking";
-import { Wallet } from "./Wallet/Wallet";
+import { Dashboard } from "./Dashboard/Dashboard";
+import theme from "../utils/theme";
 
 const App = () => (
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <CardanoProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Wallet />}>
+          <Route path="/" element={<Dashboard />}>
             <Route index element={<Balance />} />
             <Route path="assets" element={<Assets />} />
             <Route path="staking" element={<Staking />} />

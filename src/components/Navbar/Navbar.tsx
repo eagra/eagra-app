@@ -1,71 +1,117 @@
-import { Button } from "@chakra-ui/button";
 import { Box } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import logo from "../../assets/cardano-logo.svg";
-import { useCardano } from "../../hooks/useCardano";
+// import { useCardano } from "../../hooks/useCardano";
+import {
+  Button,
+  useColorMode,
+  useColorModeValue,
+  useOutsideClick,
+} from "@chakra-ui/react";
+import {
+  ArrowBackIcon,
+  HamburgerIcon,
+  MoonIcon,
+  SunIcon,
+} from "@chakra-ui/icons";
+import { AnimatedBox, AnimatedButton } from "../misc";
+import { NavElement } from "./NavElement";
+import { TiChartArea, TiStarFullOutline } from "react-icons/ti";
+import { MdFavorite } from "react-icons/md";
+import { useScreenSize } from "../../hooks/useScreenSize";
+import { noop } from "@chakra-ui/utils";
 
 export const Navbar = () => {
-  const { cardano } = useCardano();
-  const [expanded, setExpanded] = useState(false);
+  // const { cardano } = useCardano();
+  const { isMobile } = useScreenSize();
 
-  const scrollListener = useCallback(() => {
-    const { scrollY } = window;
+  const [expanded, setExpanded] = useState(!isMobile);
 
-    if (scrollY >= 16 && !expanded) {
-      return setExpanded(true);
-    }
+  const $navbar = useRef<HTMLElement>() as React.RefObject<HTMLElement>;
+  useOutsideClick({
+    // something seems off with types here
+    ref: $navbar,
+    handler: isMobile ? () => setExpanded(false) : noop,
+  });
 
-    if (scrollY < 16 && expanded) {
-      return setExpanded(false);
-    }
-  }, [expanded]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", scrollListener);
-    return () => window.removeEventListener("scroll", scrollListener);
-  }, [scrollListener]);
+  const { toggleColorMode, colorMode } = useColorMode();
+  const bgColor = useColorModeValue("gray.100", "gray.900");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
 
   return (
-    <Box
+    <AnimatedBox
+      ref={$navbar}
       as="nav"
       p="4"
-      css={{
-        width: expanded ? "100%" : "96%",
-        height: 54,
-        marginTop: 16,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        position: "sticky",
-        top: 0,
-      }}
-      bgColor="teal.400"
-      borderRadius="md"
-      transition="ease-in-out .06s"
+      bgColor={bgColor}
+      borderLeftRadius="md"
       zIndex="1"
+      width="250px"
+      height="100vh"
+      flexShrink="0"
+      animate={{ x: expanded ? 0 : -250, width: expanded ? 250 : 0 }}
+      position={isMobile ? "absolute" : "relative"}
+      overflow="visible"
+      borderRightColor={borderColor}
+      borderRightWidth="1px"
+      borderRightStyle="solid"
+      display="flex"
+      flexDir="column"
+      justifyContent="space-between"
+      shadow="base"
+      css={{transition: 'background 1.2s'}}
     >
-      <img className="App-logo" src={logo} height="46" width="46" />
-
-      {cardano?.isConnected && (
-        <Box>
+      <>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginBottom="8"
+        >
           <Link to="/">
-            <Button marginRight="4" as="div">
-              Wallet
-            </Button>
+            <img className="App-logo" src={logo} height="46" width="46" />
           </Link>
-
-          <Link to="/assets">
-            <Button marginRight="4" as="div">
-              Assets
-            </Button>
-          </Link>
-
-          <Link to="/staking">
-            <Button as="div">Staking</Button>
-          </Link>
+          <AnimatedButton
+            width="46px"
+            height="46px"
+            borderRadius="full"
+            onClick={() => setExpanded((exp) => !exp)}
+            animate={{ left: expanded ? 180 : 270 }}
+            position="absolute"
+            top="4"
+          >
+            {expanded ? <ArrowBackIcon /> : <HamburgerIcon />}
+          </AnimatedButton>
         </Box>
-      )}
-    </Box>
+
+        <Box display="grid" gridTemplate="1fr" gap="4">
+          <NavElement link="/" icon={TiChartArea} activeColor="purple.400">
+            Dashboard
+          </NavElement>
+          <NavElement
+            link="/assets"
+            icon={TiStarFullOutline}
+            activeColor="yellow.400"
+          >
+            Assets
+          </NavElement>
+          <NavElement link="/staking" icon={MdFavorite} activeColor="red.400">
+            Staking
+          </NavElement>
+        </Box>
+      </>
+      <Box flex="1" display="flex" flexDir="column-reverse">
+        <Button
+          onClick={toggleColorMode}
+          justifyContent="flex-start"
+          borderRadius="full"
+          width="46px"
+          height="46px"
+        >
+          {colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+        </Button>
+      </Box>
+    </AnimatedBox>
   );
 };

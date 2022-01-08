@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn typecheck && node .esbuild/build",
-    "build:prod": "NODE_ENV=production yarn build --minify --analyze",
+    "build:prod": "NODE_ENV=production node .esbuild/build --minify --analyze",
     "watch": "node .esbuild/watch",
     "typecheck": "tsc --noEmit",
     "graphql:schema:download": "apollo schema:download --endpoint=https://graphql-api.mainnet.dandelion.link src/graphql/schema.json",
@@ -22,6 +22,7 @@
     "graphql-request": "^3.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "swr": "^1.1.1"

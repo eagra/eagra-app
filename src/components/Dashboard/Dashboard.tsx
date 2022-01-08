@@ -2,24 +2,24 @@ import { Box, Heading, Text } from "@chakra-ui/layout";
 import { Navbar } from "../Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import { Connection } from "./Connection/Connection";
+import { useColorModeValue } from "@chakra-ui/color-mode";
+import { useMediaQuery } from "@chakra-ui/media-query";
 
-export const Wallet = () => {
+export const Dashboard = () => {
+  const bgColor = useColorModeValue("white", "gray.900");
+
   return (
     <Box
-      as="main"
       w="100%"
-      bgColor="gray.800"
-      css={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: "100vh",
-        position: "relative",
-      }}
+      bgColor={bgColor}
+      width="100vw"
+      display="flex"
+      minHeight="100vh"
+      css={{transition: 'background 0.8s'}}
     >
       <Navbar />
 
-      <Box
+      {/* <Box
         as="section"
         bgColor="teal.800"
         marginTop="4"
@@ -46,8 +46,11 @@ export const Wallet = () => {
           on Cardano
         </Text>
         <Connection css={{ position: "absolute", top: 4, right: 8 }} />
+      </Box> */}
+      <Box as="main" p="12" flex="1">
+        <Connection />
+        <Outlet />
       </Box>
-      <Outlet />
     </Box>
   );
 };

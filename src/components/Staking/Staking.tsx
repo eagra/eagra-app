@@ -35,7 +35,7 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
 
 export const Pools = () => {
   const [page, setPage] = useState(1);
-  const { pools, isValidating, error } = usePools(page - 1, 500);
+  const { pools, isValidating, error } = usePools(page - 1, 25);
 
   // TODO refactor this shit
   let poolComponent;

@@ -8,6 +8,7 @@ export const GET_POOLS = gql`
       id
       pledge
       url
+      metadataHash
     }
   }
 `;

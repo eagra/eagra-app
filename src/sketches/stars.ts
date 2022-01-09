@@ -142,11 +142,6 @@ const stars = (ctx: p5) => {
     ctx.clear();
     drawDots(DOTS, ctx);
   };
-
-  ctx.windowResized = () => {
-    ctx.resizeCanvas(ctx.windowWidth, ctx.windowHeight);
-    populateDots(DOTS, ctx);
-  };
 };
 
 export default stars;

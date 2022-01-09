@@ -16,12 +16,14 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
+import { useScreenSize } from "../../hooks/useScreenSize";
 
 export const Balance = () => {
   const { cardano } = useCardano();
   const rewardAddress = useRewardAddress();
   const textHighlightColor = useColorModeValue("teal.500", "teal.300");
   const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
+  const { isMobile, isMedium } = useScreenSize();
 
   const [balance, setBalance] = useState("0");
   const [collateral, setCollateral] = useState("0");
@@ -66,7 +68,7 @@ export const Balance = () => {
   if (!cardano || !cardano.isConnected) return null;
 
   return (
-    <Box w="50%" flex="1">
+    <Box w={isMobile || isMedium ? "100%" : "50%"} flex="1">
       <Heading>Dashboard</Heading>
       {isBalanceLoading ? (
         "Loading..."

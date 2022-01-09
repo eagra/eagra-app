@@ -14,6 +14,7 @@ export const ResponsiveGrid = ({ children }: { children: ReactNode }) => {
 
   return (
     <Box
+      width="100%"
       as="section"
       display="grid"
       gap="16px"

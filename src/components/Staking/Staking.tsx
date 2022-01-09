@@ -3,22 +3,12 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Heading, Text } from "@chakra-ui/layout";
 import { useColorModeValue } from "@chakra-ui/system";
 import { useState } from "react";
-import useSWR from "swr";
 import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
-import { usePools } from "../../hooks/usePools";
-import { defaultFetcher } from "../../utils/fetchers";
+import { usePoolData, usePools } from "../../hooks/usePools";
 import { ResponsiveGrid } from "../misc/ResponsiveGrid";
 
-const usePoolData = (poolUrl: string | null) => {
-  const { data, isValidating, error } = useSWR(poolUrl, defaultFetcher, {
-    revalidateOnFocus: false,
-  });
-
-  return { data, isValidating, error };
-};
-
 const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
-  const { data, error } = usePoolData(pool.url);
+  const { data, error } = usePoolData(pool);
   const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
 
   if (!data || error) return null;
@@ -45,7 +35,7 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
 
 export const Pools = () => {
   const [page, setPage] = useState(1);
-  const { pools, isValidating, error } = usePools(page - 1, 50);
+  const { pools, isValidating, error } = usePools(page - 1, 500);
 
   // TODO refactor this shit
   let poolComponent;
@@ -85,7 +75,7 @@ export const Pools = () => {
 
 export const Staking = () => {
   return (
-    <Box>
+    <Box w="100%">
       <Heading>Delegate</Heading>
       <Pools />
     </Box>

@@ -42,7 +42,7 @@ export const Navbar = () => {
   }, [isMobile])
 
   const { toggleColorMode, colorMode } = useColorMode();
-  const bgColor = useColorModeValue("gray.100", "gray.900");
+  const bgColor = useColorModeValue("whiteAlpha.600", "blackAlpha.600");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const logoBgColor = useColorModeValue("gray.800", "transparent");
 
@@ -53,6 +53,7 @@ export const Navbar = () => {
       as="nav"
       p="4"
       bgColor={bgColor}
+      backdropFilter="blur(12px)"
       borderLeftRadius="md"
       zIndex="1"
       width="250px"

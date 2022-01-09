@@ -14,6 +14,7 @@ export interface GetPools_stakePools {
   id: any;
   pledge: string;
   url: string | null;
+  metadataHash: any | null;
 }
 
 export interface GetPools {

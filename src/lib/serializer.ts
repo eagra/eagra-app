@@ -1,4 +1,11 @@
 import { Address, Value } from "@emurgo/cardano-serialization-lib-browser";
+import { bech32 } from "bech32";
+import { Buffer } from "buffer";
+
+export const decodeBech32 = (poolIdBech32: string) => {
+  const { words } = bech32.decode(poolIdBech32);
+  return Buffer.from(bech32.fromWords(words)).toString("hex");
+};
 
 // Convert a hex string to a byte array
 export const hexToBytes = (hex: string) => {

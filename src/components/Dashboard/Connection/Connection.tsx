@@ -17,7 +17,7 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
   const { cardano, init } = useCardano();
 
   const toast = useToast();
-  const textColor = useColorModeValue("black", "white");
+  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
 
   const connectWallet = async () => {
     if (!cardano) return;
@@ -40,14 +40,14 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
     <Box {...props}>
       {cardano?.isConnected && walletAddresses.length > 0 && (
         <Box
-          css={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-          }}
+          display="flex"
+          backdropFilter="blur(6px)"
+          bgColor={backdropColor}
+          borderRadius="lg"
+          p="1"
+          alignItems="center"
         >
-          <Text color={textColor}>
+          <Text>
             ✨ Wallet Connected{" "}
             <Tooltip label={walletAddresses[0].address}>
               <CopyIcon

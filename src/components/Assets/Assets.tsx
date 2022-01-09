@@ -6,6 +6,7 @@ import { Tooltip, Box, Heading, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useScreenSize } from "../../hooks/useScreenSize";
 import { useMemo } from "react";
+import { ResponsiveGrid } from "../misc/ResponsiveGrid";
 
 type WalletData = {
   addr: string;
@@ -55,14 +56,6 @@ const AssetComponent = ({ asset }: { asset: Asset }) => {
 
 export const Assets = () => {
   const rewardAddress = useRewardAddress();
-  const { isMobile, isMedium, isLarge } = useScreenSize();
-
-  const responsiveGridTemplate = useMemo(() => {
-    if (isMobile) return "1fr";
-    if (isMedium) return "1fr 1fr";
-    if (isLarge) return "1fr 1fr 1fr";
-    return "1fr 1fr 1fr 1fr";
-  }, [isMobile, isMedium]);
 
   const {
     data: walletData,
@@ -74,25 +67,30 @@ export const Assets = () => {
     { revalidateOnFocus: false }
   );
 
-  if (isValidating) return <Text color="white">Loading...</Text>;
-  if (error) return <Text color="white">Error :(</Text>;
-
-  return (
-    <Box w="100%">
-      <Heading as="h2" size="xl" marginTop="8" marginBottom="4">
-        Assets
-      </Heading>
-      <Box
-        as="section"
-        display="grid"
-        gap="16px"
-        gridTemplateColumns={responsiveGridTemplate}
-      >
+  // TODO refactor this 💩
+  let assetsComponent;
+  if (isValidating) {
+    assetsComponent = <Text color="white">Loading...</Text>;
+  } else if (error) {
+    assetsComponent = <Text color="white">Error :(</Text>;
+  } else {
+    assetsComponent = (
+      <ResponsiveGrid>
         {walletData &&
           walletData.tokens.map((asset: Asset, index: number) => (
             <AssetComponent key={index} asset={asset} />
           ))}
-      </Box>
+      </ResponsiveGrid>
+    );
+  }
+  // end TODO
+
+  return (
+    <Box w="100%">
+      <Heading as="h2" size="xl" marginBottom="8">
+        Assets
+      </Heading>
+      {assetsComponent}
     </Box>
   );
 };

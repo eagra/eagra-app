@@ -66,7 +66,7 @@ export const Dashboard = () => {
         alignItems="flex-start"
         overflowY="scroll"
       >
-        <Connection />
+        <Connection position="absolute" top="12" right="12" />
         <Outlet />
       </Box>
     </Box>

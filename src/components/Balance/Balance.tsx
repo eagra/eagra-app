@@ -8,7 +8,13 @@ import {
   getLockedBalance,
   lovelaceToAda,
 } from "../../lib/assets";
-import { Tooltip, Text, Box, useColorModeValue } from "@chakra-ui/react";
+import {
+  Tooltip,
+  Text,
+  Box,
+  useColorModeValue,
+  Heading,
+} from "@chakra-ui/react";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
 
 export const Balance = () => {
@@ -60,19 +66,19 @@ export const Balance = () => {
   if (!cardano || !cardano.isConnected) return null;
 
   return (
-    <Box
-      w="50%"
-      backdropFilter="blur(6px)"
-      bgColor={backdropColor}
-      p="8"
-      borderRadius="lg"
-      marginTop="4"
-      flex="1"
-    >
+    <Box w="50%" flex="1">
+      <Heading>Dashboard</Heading>
       {isBalanceLoading ? (
         "Loading..."
       ) : (
-        <Box>
+        <Box
+          backdropFilter="blur(6px)"
+          bgColor={backdropColor}
+          p="8"
+          borderRadius="lg"
+          marginTop="8"
+          height="50%"
+        >
           <Text fontSize="2xl">
             Available Balance:{" "}
             <Text as="b" color={textHighlightColor}>
@@ -92,7 +98,9 @@ export const Balance = () => {
 
           {rewardAddress?.length && rewardAddress.length > 0 && (
             <div css={{ marginTop: 12 }}>
-              <Text>Reward Address: {rewardAddress}</Text>
+              <Text>
+                Reward Address: <Text fontStyle="italic">{rewardAddress}</Text>
+              </Text>
             </div>
           )}
         </Box>

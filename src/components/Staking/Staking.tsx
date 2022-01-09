@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/button";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Heading, Text } from "@chakra-ui/layout";
 import { useColorModeValue } from "@chakra-ui/system";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import useSWR from "swr";
 import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
 import { usePools } from "../../hooks/usePools";
 import { defaultFetcher } from "../../utils/fetchers";
+import { ResponsiveGrid } from "../misc/ResponsiveGrid";
 
 const usePoolData = (poolUrl: string | null) => {
   const { data, isValidating, error } = useSWR(poolUrl, defaultFetcher, {
@@ -26,9 +28,16 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
       bgColor={backdropColor}
       p="8"
       borderRadius="lg"
+      display="flex"
+      flexDir="column"
+      justifyContent="space-between"
     >
-      <Text>{data.name}</Text>
-      <Text>{data.ticker}</Text>
+      <Box>
+        <Text size="lg" fontWeight="bold">
+          {data.name}
+        </Text>
+        <Text>{data.ticker}</Text>
+      </Box>
       <Text>{data.description}</Text>
     </Box>
   );
@@ -36,37 +45,38 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
 
 export const Pools = () => {
   const [page, setPage] = useState(1);
-  const { pools, isValidating, error } = usePools(page - 1, 20);
+  const { pools, isValidating, error } = usePools(page - 1, 50);
 
-  if (isValidating) return <Text>Loading...</Text>;
-  // if (error || !pools || pools.length === 0) return <Text>Error</Text>;
-
-  return (
-    <Box>
-      <Text size="md" marginTop="4" marginBottom="2">
-        Stake Pools
-      </Text>
-      <Box
-        css={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gap: "16px",
-        }}
-      >
+  // TODO refactor this shit
+  let poolComponent;
+  if (isValidating) {
+    poolComponent = <Text>Loading...</Text>;
+  } else if (error || !pools || pools.length === 0) {
+    poolComponent = <Text>Error</Text>;
+  } else {
+    poolComponent = (
+      <ResponsiveGrid>
         {pools?.map((pool) => {
           if (!pool) return null;
           return <Pool pool={pool} key={pool.id} />;
         })}
-      </Box>
-      <Box d="flex" flexDir="row" marginTop="4">
+      </ResponsiveGrid>
+    );
+  }
+  // end TODO
+
+  return (
+    <Box marginTop="8">
+      {poolComponent}
+      <Box d="flex" flexDir="row" marginTop="4" alignItems="center">
         <Button onClick={() => setPage((currentPage) => currentPage - 1)}>
-          {"<"}
+          <ArrowBackIcon />
         </Button>
-        <Text marginLeft="1" marginRight="1">
+        <Text marginLeft="2" marginRight="2">
           {page}
         </Text>
         <Button onClick={() => setPage((currentPage) => currentPage + 1)}>
-          {">"}
+          <ArrowForwardIcon />
         </Button>
       </Box>
     </Box>
@@ -75,7 +85,7 @@ export const Pools = () => {
 
 export const Staking = () => {
   return (
-    <Box color="white" padding="6">
+    <Box>
       <Heading>Delegate</Heading>
       <Pools />
     </Box>

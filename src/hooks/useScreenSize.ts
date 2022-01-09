@@ -12,7 +12,6 @@ export const useScreenSize = () => {
   const isLarge = small && large && !xl;
   const isXl = small && large && xl;
 
-  console.log({ isMobile, isMedium, isLarge, isXl });
   return {
     isMobile,
     isMedium,

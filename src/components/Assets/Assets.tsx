@@ -4,6 +4,8 @@ import { Asset } from "../../lib/assets";
 import { defaultFetcher } from "../../utils/fetchers";
 import { Tooltip, Box, Heading, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
+import { useScreenSize } from "../../hooks/useScreenSize";
+import { useMemo } from "react";
 
 type WalletData = {
   addr: string;
@@ -22,8 +24,6 @@ const ipfsEndpoint = "https://infura-ipfs.io/ipfs";
 
 const AssetComponent = ({ asset }: { asset: Asset }) => {
   const { quantity, name, policy, fingerprint, metadata } = asset;
-
-  console.log({ asset });
 
   const image = metadata?.image as string | undefined;
   const imageUrl = image
@@ -55,6 +55,14 @@ const AssetComponent = ({ asset }: { asset: Asset }) => {
 
 export const Assets = () => {
   const rewardAddress = useRewardAddress();
+  const { isMobile, isMedium, isLarge } = useScreenSize();
+
+  const responsiveGridTemplate = useMemo(() => {
+    if (isMobile) return "1fr";
+    if (isMedium) return "1fr 1fr";
+    if (isLarge) return "1fr 1fr 1fr";
+    return "1fr 1fr 1fr 1fr";
+  }, [isMobile, isMedium]);
 
   const {
     data: walletData,
@@ -70,22 +78,21 @@ export const Assets = () => {
   if (error) return <Text color="white">Error :(</Text>;
 
   return (
-    <Box css={{ width: "100%" }} p="6">
-      <Heading as="h2" size="xl" color="white" marginTop="8" marginBottom="4">
+    <Box w="100%">
+      <Heading as="h2" size="xl" marginTop="8" marginBottom="4">
         Assets
       </Heading>
-      <section
-        css={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gap: 16,
-        }}
+      <Box
+        as="section"
+        display="grid"
+        gap="16px"
+        gridTemplateColumns={responsiveGridTemplate}
       >
         {walletData &&
           walletData.tokens.map((asset: Asset, index: number) => (
             <AssetComponent key={index} asset={asset} />
           ))}
-      </section>
+      </Box>
     </Box>
   );
 };

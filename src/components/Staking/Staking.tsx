@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Heading, Text } from "@chakra-ui/layout";
+import { useColorModeValue } from "@chakra-ui/system";
 import { useState } from "react";
 import useSWR from "swr";
 import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
@@ -16,10 +17,16 @@ const usePoolData = (poolUrl: string | null) => {
 
 const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
   const { data, error } = usePoolData(pool.url);
+  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
 
   if (!data || error) return null;
   return (
-    <Box bgColor="teal.800" p="2" borderRadius="md">
+    <Box
+      backdropFilter="blur(6px)"
+      bgColor={backdropColor}
+      p="8"
+      borderRadius="lg"
+    >
       <Text>{data.name}</Text>
       <Text>{data.ticker}</Text>
       <Text>{data.description}</Text>
@@ -32,11 +39,13 @@ export const Pools = () => {
   const { pools, isValidating, error } = usePools(page - 1, 20);
 
   if (isValidating) return <Text>Loading...</Text>;
-  if (error || !pools || pools.length === 0) return <Text>Error</Text>;
+  // if (error || !pools || pools.length === 0) return <Text>Error</Text>;
 
   return (
-    <>
-      <Text size="md" marginTop="4" marginBottom="2">Stake Pools</Text>
+    <Box>
+      <Text size="md" marginTop="4" marginBottom="2">
+        Stake Pools
+      </Text>
       <Box
         css={{
           display: "grid",
@@ -44,29 +53,23 @@ export const Pools = () => {
           gap: "16px",
         }}
       >
-        {pools.map((pool) => {
+        {pools?.map((pool) => {
           if (!pool) return null;
           return <Pool pool={pool} key={pool.id} />;
         })}
       </Box>
       <Box d="flex" flexDir="row" marginTop="4">
-        <Button
-          color="black"
-          onClick={() => setPage((currentPage) => currentPage - 1)}
-        >
+        <Button onClick={() => setPage((currentPage) => currentPage - 1)}>
           {"<"}
         </Button>
         <Text marginLeft="1" marginRight="1">
           {page}
         </Text>
-        <Button
-          color="black"
-          onClick={() => setPage((currentPage) => currentPage + 1)}
-        >
+        <Button onClick={() => setPage((currentPage) => currentPage + 1)}>
           {">"}
         </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/cardano-logo.svg";
 // import { useCardano } from "../../hooks/useCardano";
 import {
@@ -21,6 +21,7 @@ import { TiChartArea, TiStarFullOutline } from "react-icons/ti";
 import { MdFavorite } from "react-icons/md";
 import { useScreenSize } from "../../hooks/useScreenSize";
 import { noop } from "@chakra-ui/utils";
+import { CustomIcon } from "../misc/CustomIcons";
 
 export const Navbar = () => {
   // const { cardano } = useCardano();
@@ -35,9 +36,16 @@ export const Navbar = () => {
     handler: isMobile ? () => setExpanded(false) : noop,
   });
 
+  useEffect(() => {
+    if (isMobile) return setExpanded(false);
+    setExpanded(true);
+  }, [isMobile])
+
   const { toggleColorMode, colorMode } = useColorMode();
   const bgColor = useColorModeValue("gray.100", "gray.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+  const logoBgColor = useColorModeValue("gray.800", "transparent");
+
 
   return (
     <AnimatedBox
@@ -60,7 +68,7 @@ export const Navbar = () => {
       flexDir="column"
       justifyContent="space-between"
       shadow="base"
-      css={{transition: 'background 1.2s'}}
+      css={{ transition: "background 1.2s" }}
     >
       <>
         <Box
@@ -70,7 +78,13 @@ export const Navbar = () => {
           marginBottom="8"
         >
           <Link to="/">
-            <img className="App-logo" src={logo} height="46" width="46" />
+            <CustomIcon
+              icon={logo}
+              fromImage={true}
+              height="46"
+              width="46"
+              bgColor={logoBgColor}
+            />
           </Link>
           <AnimatedButton
             width="46px"

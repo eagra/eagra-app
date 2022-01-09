@@ -8,12 +8,14 @@ import {
   getLockedBalance,
   lovelaceToAda,
 } from "../../lib/assets";
-import { Tooltip, Text, Box } from "@chakra-ui/react";
+import { Tooltip, Text, Box, useColorModeValue } from "@chakra-ui/react";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
 
 export const Balance = () => {
   const { cardano } = useCardano();
   const rewardAddress = useRewardAddress();
+  const textHighlightColor = useColorModeValue("teal.500", "teal.300");
+  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
 
   const [balance, setBalance] = useState("0");
   const [collateral, setCollateral] = useState("0");
@@ -58,27 +60,36 @@ export const Balance = () => {
   if (!cardano || !cardano.isConnected) return null;
 
   return (
-    <Box css={{ color: "white", width: "100%" }} p="6">
+    <Box
+      w="50%"
+      backdropFilter="blur(6px)"
+      bgColor={backdropColor}
+      p="8"
+      borderRadius="lg"
+      marginTop="4"
+      flex="1"
+    >
       {isBalanceLoading ? (
         "Loading..."
       ) : (
-        <Box marginTop="4">
+        <Box>
           <Text fontSize="2xl">
             Available Balance:{" "}
-            <span css={{ color: "#99ddff" }}>
+            <Text as="b" color={textHighlightColor}>
               {currencyToSymbol("ada")}
               {balance}{" "}
-            </span>
+            </Text>
+            <Tooltip
+              label={`+${currencyToSymbol(
+                "ada"
+              )}${collateral} collateral and ${currencyToSymbol(
+                "ada"
+              )}${locked} locked with assets`}
+            >
+              <InfoIcon />
+            </Tooltip>
           </Text>
-          <Tooltip
-            label={`+${currencyToSymbol(
-              "ada"
-            )}${collateral} collateral and ${currencyToSymbol(
-              "ada"
-            )}${locked} locked with assets`}
-          >
-            <InfoIcon />
-          </Tooltip>
+
           {rewardAddress?.length && rewardAddress.length > 0 && (
             <div css={{ marginTop: 12 }}>
               <Text>Reward Address: {rewardAddress}</Text>

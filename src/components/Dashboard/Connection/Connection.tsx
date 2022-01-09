@@ -1,14 +1,23 @@
 import { useCardano } from "../../../hooks/useCardano";
 import { useAddresses } from "../../../hooks/useAddresses";
-import { Tooltip, Text, Button } from "@chakra-ui/react";
+import {
+  Tooltip,
+  Text,
+  Button,
+  Box,
+  useColorModeValue,
+  ChakraComponent,
+  PropsOf,
+} from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/react";
 
-export const Connection = ({ className }: { className?: string }) => {
-  const { cardano, init } = useCardano();
-  const toast = useToast();
-
+export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
   const walletAddresses = useAddresses();
+  const { cardano, init } = useCardano();
+
+  const toast = useToast();
+  const textColor = useColorModeValue("black", "white");
 
   const connectWallet = async () => {
     if (!cardano) return;
@@ -28,9 +37,9 @@ export const Connection = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={className} css={{ color: "white" }}>
+    <Box {...props}>
       {cardano?.isConnected && walletAddresses.length > 0 && (
-        <div
+        <Box
           css={{
             display: "flex",
             flexDirection: "column",
@@ -38,22 +47,36 @@ export const Connection = ({ className }: { className?: string }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Text>
+          <Text color={textColor}>
             ✨ Wallet Connected{" "}
             <Tooltip label={walletAddresses[0].address}>
-              <CopyIcon />
+              <CopyIcon
+                cursor="pointer"
+                onClick={() => {
+                  if (walletAddresses[0].address) {
+                    navigator.clipboard
+                      .writeText(walletAddresses[0].address)
+                      .then(() => {
+                        toast({
+                          title: "Wallet address copied!",
+                          status: "success",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                      });
+                  }
+                }}
+              />
             </Tooltip>
             <Text as="span" color="orange">
               {cardano.networkId === 0 && "(testnet)"}
             </Text>
           </Text>
-        </div>
+        </Box>
       )}
       {!cardano?.isConnected && (
-        <Button color="black" onClick={connectWallet}>
-          Connect Wallet
-        </Button>
+        <Button onClick={connectWallet}>Connect Wallet</Button>
       )}
-    </div>
+    </Box>
   );
 };

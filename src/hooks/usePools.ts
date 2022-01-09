@@ -6,7 +6,7 @@ import { graphqlFetcher } from "../utils/fetchers";
 export const usePools = (pageIndex: number, limit = 20) => {
   const { data, isValidating, error } = useSWR<GetPools>(
     [
-      "https://graphql-api.mainnet.dandelion.link/",
+      "https://graphql-testnet.nstankov.com/",
       GET_POOLS,
       { limit, offset: limit * pageIndex },
     ],

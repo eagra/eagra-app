@@ -73,6 +73,7 @@ export const Assets = () => {
     assetsComponent = <Text color="white">Loading...</Text>;
   } else if (error) {
     //TODO: handle error
+    //https://github.com/eagra/eagra-app/issues/3
     console.error(error);
     assetsComponent = <Text color="white">Error :(</Text>;
   } else {

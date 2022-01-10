@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
 import { Asset } from "../../lib/assets";
-import { defaultFetcher } from "../../utils/fetchers";
+import { jsonFetcher } from "../../utils/fetchers";
 import { Tooltip, Box, Heading, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useScreenSize } from "../../hooks/useScreenSize";
@@ -63,7 +63,7 @@ export const Assets = () => {
     error,
   } = useSWR<WalletData>(
     rewardAddress ? `${walletEndpoint}/${rewardAddress}` : null,
-    defaultFetcher,
+    jsonFetcher,
     { revalidateOnFocus: false }
   );
 
@@ -72,6 +72,8 @@ export const Assets = () => {
   if (isValidating) {
     assetsComponent = <Text color="white">Loading...</Text>;
   } else if (error) {
+    //TODO: handle error
+    console.error(error);
     assetsComponent = <Text color="white">Error :(</Text>;
   } else {
     assetsComponent = (

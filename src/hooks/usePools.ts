@@ -5,7 +5,7 @@ import {
   GetPools_stakePools,
 } from "../graphql/queries/__generated__/GetPools";
 import { decodeBech32 } from "../lib/serializer";
-import { defaultFetcher, graphqlFetcher } from "../utils/fetchers";
+import { jsonFetcher, graphqlFetcher } from "../utils/fetchers";
 
 export const usePools = (pageIndex: number, limit = 20) => {
   const { data, isValidating, error } = useSWR<GetPools>(

@@ -5,7 +5,7 @@ import { Connection } from "./Connection/Connection";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { RefObject, useEffect, useRef } from "react";
 import stars from "../../sketches/stars";
-import blobs from "../../sketches/blobls";
+// import blobs from "../../sketches/blobls";
 
 export const Dashboard = () => {
   const bgColor = useColorModeValue("white", "gray.900");
@@ -14,7 +14,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     const p5 = require("p5");
-    new p5(blobs, $p5.current);
+    new p5(stars, $p5.current);
   }, []);
 
   return (

@@ -30,16 +30,21 @@ export const usePools = (pageIndex: number, limit = 20) => {
 };
 
 export const usePoolData = (pool: GetPools_stakePools) => {
-  const { id, metadataHash } = pool;
-  const hex = id ? decodeBech32(id) : "";
-  const url = `https://smash-testnet-dev.nstankov.com/api/v1/metadata/${hex}/${metadataHash}`;
-  const { data, isValidating, error } = useSWR(
-    !id ? null : url,
-    defaultFetcher,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+  const { id, metadataHash, retirements } = pool;
+  const hex = id ? decodeBech32(id) : null;
+  const url =
+    hex &&
+    metadataHash &&
+    (!retirements || retirements?.length === 0) &&
+    `https://smash-testnet-dev.nstankov.com/api/v1/metadata/${hex}/${metadataHash}`;
 
-  return { data, isValidating, error };
+  const { data, isValidating, error } = useSWR(url, defaultFetcher, {
+    revalidateOnFocus: false,
+  });
+
+  return {
+    data: data || ((retirements as any)?.length > 0 && { retired: true }),
+    isValidating,
+    error,
+  };
 };

@@ -7,6 +7,11 @@
 // GraphQL query operation: GetPools
 // ====================================================
 
+export interface GetPools_stakePools_retirements {
+  __typename: "StakePoolRetirement";
+  inEffectFrom: number;
+}
+
 export interface GetPools_stakePools {
   __typename: "StakePool";
   fixedCost: string;
@@ -15,6 +20,7 @@ export interface GetPools_stakePools {
   pledge: string;
   url: string | null;
   metadataHash: any | null;
+  retirements: (GetPools_stakePools_retirements | null)[] | null;
 }
 
 export interface GetPools {

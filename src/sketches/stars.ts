@@ -133,7 +133,8 @@ const stars = (ctx: p5) => {
   ctx.setup = () => {
     ctx.createCanvas(ctx.windowWidth, ctx.windowHeight);
     ctx.frameRate(30);
-    ctx.stroke(100, 100, 100, 50);
+    // ctx.stroke(100, 100, 100, 50);
+    ctx.noStroke();
 
     populateDots(DOTS, ctx);
   };
@@ -141,6 +142,11 @@ const stars = (ctx: p5) => {
   ctx.draw = () => {
     ctx.clear();
     drawDots(DOTS, ctx);
+  };
+
+  ctx.windowResized = () => {
+    ctx.resizeCanvas(ctx.windowWidth, ctx.windowHeight);
+    populateDots(DOTS, ctx);
   };
 };
 

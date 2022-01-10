@@ -9,6 +9,9 @@ export const GET_POOLS = gql`
       pledge
       url
       metadataHash
+      retirements {
+        inEffectFrom
+      }
     }
   }
 `;

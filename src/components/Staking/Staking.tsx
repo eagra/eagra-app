@@ -12,6 +12,7 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
   const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
 
   if (!data || error) return null;
+
   return (
     <Box
       backdropFilter="blur(6px)"
@@ -22,20 +23,29 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
       flexDir="column"
       justifyContent="space-between"
     >
-      <Box>
-        <Text size="lg" fontWeight="bold">
-          {data.name}
-        </Text>
-        <Text>{data.ticker}</Text>
-      </Box>
-      <Text>{data.description}</Text>
+      {data.retired ? (
+        <>
+          <a href={pool.url ?? ""}>{pool.id}</a>
+          <Text color="red.400">This pool is retired</Text>
+        </>
+      ) : (
+        <>
+          <Box>
+            <Text size="lg" fontWeight="bold">
+              {data.name}
+            </Text>
+            <Text>{data.ticker}</Text>
+          </Box>
+          <Text>{data.description}</Text>
+        </>
+      )}
     </Box>
   );
 };
 
 export const Pools = () => {
   const [page, setPage] = useState(1);
-  const { pools, isValidating, error } = usePools(page - 1, 25);
+  const { pools, isValidating, error } = usePools(page - 1, 24);
 
   // TODO refactor this shit
   let poolComponent;

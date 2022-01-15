@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { getRewardAddress } from "../lib/address";
 import { useCardano } from "./useCardano";
 
 export const useRewardAddress = () => {
   const { cardano } = useCardano();
   const [rewardAddress, setRewardAddress] = useState<string | null>(null);
 
-  useEffect(() => {
+  const handle = async () => {
     if (!cardano) return;
 
-    getRewardAddress(cardano).then((address) => {
-      setRewardAddress(address);
-    });
+    const rewardAddress = await cardano.getRewardAddress();
+    setRewardAddress(rewardAddress);
+  };
+
+  useEffect(() => {
+    handle();
   }, [cardano]);
 
   return rewardAddress;

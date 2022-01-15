@@ -25,7 +25,12 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
     >
       {data.retired ? (
         <>
-          <a href={pool.url ?? ""}>{pool.id}</a>
+          <a
+            css={{ wordWrap: "break-word", maxWidth: 200 }}
+            href={pool.url ?? ""}
+          >
+            {pool.id}
+          </a>
           <Text color="red.400">This pool is retired</Text>
         </>
       ) : (

@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { getAddresses, ParsedAddress } from "../lib/address";
 import { useCardano } from "./useCardano";
 
 export const useAddresses = () => {
   const { cardano } = useCardano();
-  const [walletAddresses, setWalletAddresses] = useState<ParsedAddress[]>([]);
+  const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
+
+  const handle = async () => {
+    if (!cardano) return;
+    const addresses = await cardano.getAddresses();
+    setWalletAddresses(addresses);
+  };
 
   useEffect(() => {
-    if (!cardano) return;
-    getAddresses(cardano).then((addresses) => {
-      setWalletAddresses(addresses);
-    });
+    handle();
   }, [cardano]);
 
   return walletAddresses;

@@ -1,12 +1,17 @@
 import useSWR from "swr";
 import { useRewardAddress } from "../../hooks/useRewardAddress";
-import { Asset } from "../../lib/assets";
 import { defaultFetcher } from "../../utils/fetchers";
-import { Tooltip, Box, Heading, Text } from "@chakra-ui/react";
+import {
+  Tooltip,
+  Box,
+  Heading,
+  Text,
+  useColorModeValue,
+  Image,
+} from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
-import { useScreenSize } from "../../hooks/useScreenSize";
-import { useMemo } from "react";
 import { ResponsiveGrid } from "../misc/ResponsiveGrid";
+import { Asset } from "../../lib";
 
 type WalletData = {
   addr: string;
@@ -25,6 +30,7 @@ const ipfsEndpoint = "https://infura-ipfs.io/ipfs";
 
 const AssetComponent = ({ asset }: { asset: Asset }) => {
   const { quantity, name, policy, fingerprint, metadata } = asset;
+  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
 
   const image = metadata?.image as string | undefined;
   const imageUrl = image
@@ -34,21 +40,27 @@ const AssetComponent = ({ asset }: { asset: Asset }) => {
     : null;
 
   return (
-    <Box bgColor="teal.800" p="2" css={{ marginBottom: 32, color: "white" }}>
+    <Box
+      backdropFilter="blur(6px)"
+      bgColor={backdropColor}
+      p="8"
+      borderRadius="lg"
+    >
       {imageUrl && (
-        <img
+        <Image
+          borderRadius="md"
           src={imageUrl}
           alt={`${name} token image`}
           css={{ marginBottom: 16, width: "100%", height: "auto" }}
         />
       )}
       <div>
-        <span>
+        <Text>
           {quantity} {name}{" "}
-        </span>
-        <Tooltip label={`PolicyId: ${policy}  Fingerprint: ${fingerprint}`}>
-          <InfoIcon />
-        </Tooltip>
+          <Tooltip label={`PolicyId: ${policy}  Fingerprint: ${fingerprint}`}>
+            <InfoIcon />
+          </Tooltip>
+        </Text>
       </div>
     </Box>
   );

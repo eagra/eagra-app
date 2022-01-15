@@ -1,22 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
-export type CardanoApi = Record<string, any>;
-type InjectedWindow = typeof window & { cardano: CardanoApi };
-
-type CardanoNetworkId = 0 | 1;
-
-const getCardanoFromWindow = () => {
-  return (window as InjectedWindow).cardano;
-};
+import { Cardano, InjectedApi, InjectedApiType, Serializer } from "../lib";
 
 const CardanoContext = createContext<{
-  cardano: CardanoApi | undefined;
-  refresh: () => void;
-  init: () => void | Promise<void>;
+  injected: InjectedApiType | undefined;
+  cardano: Cardano | undefined;
+  init: (walletName: string) => void;
+  // refresh: () => void;
 }>({
+  injected: undefined,
   cardano: undefined,
-  refresh: () => console.log("not implemented"),
-  init: () => console.log("not implemented"),
+  init: (_name) => console.log("not implemented here"),
+  // refresh: () => console.log("not implemented"),
 });
 
 export const useCardano = () => {
@@ -24,56 +18,86 @@ export const useCardano = () => {
 };
 
 export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
-  const [cardano, setCardano] = useState<CardanoApi | undefined>(
-    getCardanoFromWindow()
-  );
+  const injectedApi = new InjectedApi();
+  const serializer = new Serializer();
+  const [cardano, setCardano] = useState<Cardano | undefined>();
 
-  const refreshNetwork = () => {
-    const api = getCardanoFromWindow();
-    console.log({ api });
-    api.getNetworkId().then((newNetworkId: CardanoNetworkId) => {
-      console.log({ newNetworkId });
-      setCardano({
-        ...api,
-        networkId: newNetworkId,
-      });
+  useEffect(() => {
+    injectedApi.enabled().then(async (enabled) => {
+      if (!enabled) return;
+      const fullApi = await enabled?.enable();
+      if (!fullApi) return;
+
+      const wallet = {
+        ...enabled,
+        fullApi,
+      };
+
+      setCardano(new Cardano(wallet, serializer));
+    });
+  }, []);
+
+  const init = (walletName: string) => {
+    injectedApi.init(walletName).then((fullApi) => {
+      const wallet = {
+        ...injectedApi.injected[walletName],
+        fullApi,
+      };
+
+      setCardano(new Cardano(wallet, serializer));
     });
   };
 
-  const onNetworkChange = (networkId: number) => {
-    console.log("network:", networkId === 0 ? "testnet" : "mainnet");
-    refreshNetwork();
-  };
+  // const refreshNetwork = () => {
+  //   const api = getCardanoFromWindow();
+  //   console.log({ api });
+  //   api.getNetworkId().then((newNetworkId: CardanoNetworkId) => {
+  //     console.log({ newNetworkId });
+  //     setCardano({
+  //       ...api,
+  //       networkId: newNetworkId,
+  //     });
+  //   });
+  // };
 
-  const onAccountChange = (_account: string) => {
-    refreshNetwork();
-  };
+  // const onNetworkChange = (networkId: number) => {
+  //   console.log("network:", networkId === 0 ? "testnet" : "mainnet");
+  //   refreshNetwork();
+  // };
 
-  const initApi = async (cardano: CardanoApi | undefined) => {
-    if (!cardano) return;
+  // const onAccountChange = (_account: string) => {
+  //   refreshNetwork();
+  // };
 
-    const isConnected = await cardano.isEnabled();
-    const networkId = await cardano.getNetworkId();
-    setCardano({ ...cardano, isConnected, networkId });
-  };
+  // const initApi = async (cardano: CardanoApi | undefined) => {
+  //   if (!cardano) return;
 
-  useEffect(() => {
-    if (!cardano) return;
-    return cardano.onNetworkChange(onNetworkChange);
-  }, []);
+  //   const isConnected = await cardano.isEnabled();
+  //   const networkId = await cardano.getNetworkId();
+  //   setCardano({ ...cardano, isConnected, networkId });
+  // };
 
-  useEffect(() => {
-    if (!cardano) return;
-    return cardano.onAccountChange(onAccountChange);
-  }, []);
+  // useEffect(() => {
+  //   if (!cardano) return;
+  //   return cardano.onNetworkChange(onNetworkChange);
+  // }, []);
 
-  useEffect(() => {
-    if (!cardano?.isConnected) initApi(cardano);
-  }, [cardano?.isConnected]);
+  // useEffect(() => {
+  //   if (!cardano) return;
+  //   return cardano.onAccountChange(onAccountChange);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (!cardano?.isConnected) initApi(cardano);
+  // }, [cardano?.isConnected]);
 
   return (
     <CardanoContext.Provider
-      value={{ cardano, refresh: refreshNetwork, init: () => initApi(cardano) }}
+      value={{
+        injected: injectedApi.injected,
+        init,
+        cardano,
+      }}
     >
       {children}
     </CardanoContext.Provider>

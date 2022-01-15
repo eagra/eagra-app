@@ -66,7 +66,7 @@ class Blob {
   }
 }
 
-const blobs = (ctx: p5) => {
+export const blobs = (ctx: p5) => {
   const blobList: Blob[] = [];
   const drawBlob = (blob: Blob) => blob.draw(ctx);
 
@@ -85,5 +85,3 @@ const blobs = (ctx: p5) => {
     blobList.map(drawBlob);
   };
 };
-
-export default blobs;

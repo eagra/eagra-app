@@ -99,9 +99,6 @@ export const Assets = () => {
 
   return (
     <Box w="100%">
-      <Heading as="h2" size="xl" marginBottom="8">
-        Assets
-      </Heading>
       {assetsComponent}
     </Box>
   );

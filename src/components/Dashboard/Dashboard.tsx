@@ -5,9 +5,12 @@ import { Connection } from "./Connection/Connection";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { RefObject, useEffect, useRef } from "react";
 import { stars } from "../../sketches";
+import { Header } from "./Header/Header";
+import { useScreenSize } from "../../hooks/useScreenSize";
 
 export const Dashboard = () => {
   const bgColor = useColorModeValue("white", "gray.900");
+  const { isMobile } = useScreenSize();
 
   const $p5 = useRef() as RefObject<HTMLDivElement>;
 
@@ -29,7 +32,7 @@ export const Dashboard = () => {
       <Navbar />
       <Box
         as="main"
-        p="12"
+        p={isMobile ? 6 : 12}
         flex="1"
         position="relative"
         display="flex"
@@ -37,8 +40,10 @@ export const Dashboard = () => {
         alignItems="flex-start"
         overflowY="scroll"
       >
-        <Connection position="absolute" top="12" right="12" />
-        <Outlet />
+        <Header />
+        <Box marginTop="12" w="100%">
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

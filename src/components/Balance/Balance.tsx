@@ -63,17 +63,16 @@ export const Balance = () => {
 
   /* TODO: Refactor this 💩 */
   return (
-    <Box w={isMobile || isMedium ? "100%" : "50%"} flex="1">
-      <Heading>Dashboard</Heading>
+    <Box w="100%">
       {isBalanceLoading ? (
-        <Text>Loading...</Text>
+        <Heading>Loading...</Heading>
       ) : (
         <Box
+          w={isMobile || isMedium ? "100%" : "50%"}
           backdropFilter="blur(6px)"
           bgColor={backdropColor}
           p="8"
           borderRadius="lg"
-          marginTop="8"
           minHeight="25%"
         >
           <Box
@@ -99,27 +98,41 @@ export const Balance = () => {
             <Text>{currencySymbol("usd")}</Text>
           </Box>
 
-          <Box display="flex" justifyContent="flex-start" alignItems="center">
-            <Text fontSize="2xl" marginRight="2">
-              Balance:{" "}
-            </Text>
-            <Text fontSize="2xl" as="b" color={textHighlightColor}>
+          <Text fontSize="lg" fontStyle="italic">
+            Balance
+          </Text>
+          <Box display="flex" alignItems="flex-end" p="0">
+            <Text
+              fontSize="4xl"
+              fontWeight="bold"
+              color={textHighlightColor}
+              lineHeight="1"
+            >
               {currencySymbol("ada")}
               {balance.toFixed(2)}{" "}
             </Text>
+            {price && (
+              <Text fontSize="lg" paddingLeft="2">
+                {currencySymbol(baseCurrency)}
+                {(balance.toNumber() * price).toFixed(2)}{" "}
+              </Text>
+            )}
           </Box>
-          {price && (
-            <Text fontSize="sm" paddingLeft="2">
-              {currencySymbol(baseCurrency)}
-              {(balance.toNumber() * price).toFixed(2)}{" "}
-            </Text>
-          )}
-          <Text fontSize="md" marginTop="4">
-            Available balance:{" "}
-            <Text as="b" color={textHighlightColor}>
+
+          <Text fontSize="sm" marginTop="4" fontStyle="italic">
+            Available balance
+          </Text>
+          <Box display="flex" alignItems="center" p="0">
+            <Text as="b" fontSize="lg" color={textHighlightColor}>
               {currencySymbol("ada")}
               {availableBalance.toFixed(2)}{" "}
             </Text>
+            {price && (
+              <Text fontSize="sm" paddingLeft="2" marginRight="2">
+                {currencySymbol(baseCurrency)}
+                {(availableBalance.toNumber() * price).toFixed(2)}{" "}
+              </Text>
+            )}
             <Tooltip
               label={`+${currencySymbol("ada")}${collateral.toFixed(
                 2
@@ -129,13 +142,7 @@ export const Balance = () => {
             >
               <InfoIcon />
             </Tooltip>
-          </Text>
-          {price && (
-            <Text fontSize="sm" paddingLeft="2">
-              {currencySymbol(baseCurrency)}
-              {(availableBalance.toNumber() * price).toFixed(2)}{" "}
-            </Text>
-          )}
+          </Box>
         </Box>
       )}
 
@@ -144,8 +151,9 @@ export const Balance = () => {
         bgColor={backdropColor}
         p="8"
         borderRadius="lg"
-        marginTop="8"
+        marginTop="4"
         minHeight="25%"
+        w={isMobile || isMedium ? "100%" : "50%"}
       >
         {address && (
           <Box width="100%">

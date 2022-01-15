@@ -91,7 +91,6 @@ export const Pools = () => {
 export const Staking = () => {
   return (
     <Box w="100%">
-      <Heading>Delegate</Heading>
       <Pools />
     </Box>
   );

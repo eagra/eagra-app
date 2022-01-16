@@ -3,17 +3,22 @@ import { useCardano } from "./useCardano";
 
 export const useAddresses = () => {
   const { cardano } = useCardano();
-  const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
+  const [unused, setUnused] = useState<string[]>([]);
+  const [used, setUsed] = useState<string[]>([]);
 
   const handle = async () => {
     if (!cardano) return;
-    const addresses = await cardano.getAddresses();
-    setWalletAddresses(addresses);
+    const [addresses, usedAddresses] = await Promise.all([
+      cardano.getAddresses(),
+      cardano.getUsedAddresses(),
+    ]);
+    setUnused(addresses);
+    setUsed(usedAddresses);
   };
 
   useEffect(() => {
     handle();
   }, [cardano]);
 
-  return walletAddresses;
+  return { unused, used };
 };

@@ -34,6 +34,14 @@ export class Cardano {
     );
   };
 
+  getUsedAddresses = async () => {
+    const rawAddresses = await this.wallet.fullApi.getUsedAddresses({limit: 10, page: 1});
+
+    return rawAddresses.map((rawAddress: string): string =>
+      this.serializer.hexToAddress(rawAddress).to_bech32()
+    );
+  };
+
   getRewardAddress = async (): Promise<string> => {
     const [rewardAddressRaw] = await this.wallet.fullApi.getRewardAddresses();
     const rewardAddress = this.serializer
@@ -86,5 +94,20 @@ export class Cardano {
     const locked = await this.getLockedBalance();
 
     return total.minus(collateral).minus(locked);
+  };
+
+  getUtxos = async () => {
+    const rawUtxos = await this.wallet.fullApi.getUtxos();
+
+    const utxos = rawUtxos
+      ?.map(this.serializer.hexToBytes)
+      .map(TransactionUnspentOutput.from_bytes);
+
+    if (!utxos) return;
+
+    utxos.forEach((utxo) => {
+      const coin = utxo.output().amount().coin().to_str();
+      console.log({ coin });
+    });
   };
 }

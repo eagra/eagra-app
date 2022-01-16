@@ -23,7 +23,7 @@ import { InjectedApiType } from "../../../lib";
 
 export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
   const { injected, init, cardano } = useCardano();
-  const [walletAddress] = useAddresses();
+  const { unused } = useAddresses();
 
   const connectWallet = async (walletName: string): Promise<void> => {
     try {
@@ -65,8 +65,8 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
   const walletOptions = getWalletOptions(injected);
 
   const copyToClipboard = () => {
-    if (walletAddress) {
-      navigator.clipboard.writeText(walletAddress).then(() => {
+    if (unused) {
+      navigator.clipboard.writeText(unused[0]).then(() => {
         toast({
           title: "Wallet address copied!",
           status: "success",
@@ -79,7 +79,7 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
 
   return (
     <Box {...props}>
-      {cardano && !!walletAddress && (
+      {cardano && !!unused && (
         <Box
           display="flex"
           backdropFilter="blur(6px)"
@@ -90,7 +90,7 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
         >
           <Text>
             ✨ Wallet Connected{" "}
-            <Tooltip label={walletAddress}>
+            <Tooltip label={unused[0]}>
               <CopyIcon cursor="pointer" onClick={copyToClipboard} />
             </Tooltip>
             {/* <Text as="span" color="orange">

@@ -74,9 +74,9 @@ export type FullApi = {
   experimental: ExperimentalApi;
   getNetworkId: () => Promise<number>;
   getUtxos: (
-    amount: Cbor<Value>,
-    paginate: Paginate
-  ) => Promise<TransactionUnspentOutput[] | undefined>;
+    amount?: Cbor<Value>,
+    paginate?: Paginate
+  ) => Promise<Cbor<TransactionUnspentOutput>[] | undefined>;
   getBalance: () => Promise<Cbor<Value>>;
   getUsedAddresses: (paginate: Paginate) => Promise<Cbor<Address>[]>;
   getUnusedAddresses: () => Promise<Cbor<Address>[]>;

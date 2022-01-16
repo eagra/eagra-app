@@ -15,11 +15,12 @@ import { Cardano, currencySymbol, lovelaceToAda } from "../../lib";
 import BigNumber from "bignumber.js";
 import { usePrice } from "../../hooks/usePriceData";
 import { useAddresses } from "../../hooks/useAddresses";
+import { Transactions } from "./Transactions/Transactions";
 
 export const Balance = () => {
   const { cardano } = useCardano();
   const rewardAddress = useRewardAddress();
-  const [address] = useAddresses();
+  const { unused } = useAddresses();
 
   const [baseCurrency, setBaseCurrency] = useState<"eur" | "usd">("eur");
   const { price } = usePrice(baseCurrency);
@@ -155,7 +156,7 @@ export const Balance = () => {
         minHeight="25%"
         w={isMobile || isMedium ? "100%" : "50%"}
       >
-        {address && (
+        {unused?.[0] && (
           <Box width="100%">
             <Text>
               Address:{" "}
@@ -167,7 +168,7 @@ export const Balance = () => {
                 fontStyle="italic"
                 p="2"
               >
-                {address}
+                {unused?.[0]}
               </Text>
             </Text>
           </Box>
@@ -190,6 +191,7 @@ export const Balance = () => {
           </Box>
         )}
       </Box>
+      <Transactions />
     </Box>
   );
 };

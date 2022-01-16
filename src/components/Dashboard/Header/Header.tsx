@@ -24,7 +24,7 @@ export const Header = () => {
     {
       path: "/staking",
       element: (
-        <Heading size={isMobile ? "3xl" : undefined}>Staking Center</Heading>
+        <Heading size={isMobile ? "2xl" : undefined}>Staking Center</Heading>
       ),
     },
   ];

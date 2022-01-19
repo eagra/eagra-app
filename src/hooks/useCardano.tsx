@@ -37,10 +37,10 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
     });
   }, []);
 
-  const init = (walletName: string) => {
-    injectedApi.init(walletName).then((fullApi) => {
+  const init = (walletKey: string) => {
+    injectedApi.init(walletKey).then((fullApi) => {
       const wallet = {
-        ...injectedApi.injected[walletName],
+        ...injectedApi.injected[walletKey],
         fullApi,
       };
 

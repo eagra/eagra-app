@@ -113,8 +113,8 @@ export class InjectedApi {
     this.injected = (window as any).cardano;
   }
 
-  public init = (walletName: string): Promise<FullApi> => {
-    const fullApi = this.injected[walletName].enable();
+  public init = (walletKey: string): Promise<FullApi> => {
+    const fullApi = this.injected[walletKey].enable();
     return fullApi;
   };
 

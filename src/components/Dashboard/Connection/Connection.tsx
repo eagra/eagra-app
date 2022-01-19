@@ -25,9 +25,9 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
   const { injected, init, cardano } = useCardano();
   const { unused } = useAddresses();
 
-  const connectWallet = async (walletName: string): Promise<void> => {
+  const connectWallet = async (walletKey: string): Promise<void> => {
     try {
-      await init(walletName);
+      await init(walletKey);
     } catch (err) {
       toast({
         title: "Something went wrong",
@@ -49,11 +49,11 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
   const getWalletOptions = (injected: InjectedApiType | undefined) => {
     if (!injected) return null;
 
-    return Object.values(injected).map((wallet) => {
+    return Object.entries(injected).map(([key, wallet]) => {
       if (!wallet.name || !wallet.apiVersion) return null;
       return (
         <Box key={wallet.name} marginTop="4" marginBottom="4">
-          <Button onClick={() => connectWallet(wallet.name)}>
+          <Button onClick={() => connectWallet(key)}>
             <Image marginRight="2" src={wallet.icon} height="60%" />
             <Text>{wallet.name}</Text>
           </Button>

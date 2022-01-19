@@ -6,8 +6,8 @@ import { Connection } from "../Connection/Connection";
 
 export const Header = () => {
   const gradient = useColorModeValue(
-    "radial-gradient(circle, rgba(181,254,255,1) 50%, rgba(255,221,199,1) 100%)",
-    "radial-gradient(circle, rgba(0,61,91,1) 50%, rgba(0,119,144,1) 85%, rgba(0,183,213,1) 97%)"
+    "radial-gradient(circle, rgba(181,254,255,0.6) 50%, rgba(255,221,199,0.6) 100%)",
+    "radial-gradient(circle, rgba(0,61,91,0.6) 50%, rgba(0,119,144,0.6) 85%, rgba(0,183,213,0.6) 97%)"
   );
 
   const { isMobile } = useScreenSize();

@@ -15,3 +15,12 @@ export const GET_POOLS = gql`
     }
   }
 `;
+
+export const GET_POOL_OFFCHAIN_DATA = gql`
+  query PoolOffchainData {
+    pool_offline_data {
+      json
+      hash
+    }
+  }
+`;

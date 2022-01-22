@@ -6,8 +6,8 @@ import { Connection } from "../Connection/Connection";
 
 export const Header = () => {
   const gradient = useColorModeValue(
-    "radial-gradient(circle, rgba(181,254,255,0.6) 50%, rgba(255,221,199,0.6) 100%)",
-    "radial-gradient(circle, rgba(0,61,91,0.6) 50%, rgba(0,119,144,0.6) 85%, rgba(0,183,213,0.6) 97%)"
+    "radial-gradient(circle at top left, #f5db53 15%, #f58833 15% 55%, #cd66cb 55% 100%)",
+    "radial-gradient(circle at top left, #dd339b 15%, #ab33cb 15% 55%, #1111ff 55% 100%)"
   );
 
   const { isMobile } = useScreenSize();
@@ -38,11 +38,12 @@ export const Header = () => {
       position="relative"
       borderRadius="lg"
       background={gradient}
-      display={isMobile ? "flex" : "block"}
-      flexDirection="column"
+      display="flex"
+      flexDirection={isMobile ? "column" : "row"}
       justifyContent="space-between"
-      alignItems="flex-end"
-      minHeight={isMobile ? 140 : undefined}
+      alignItems={isMobile ? "flex-end" : "center"}
+      height={isMobile ? "140px" : "80px"}
+      shadow="md"
     >
       <Connection
         position={isMobile ? undefined : "absolute"}

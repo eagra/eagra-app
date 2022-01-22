@@ -1,20 +1,28 @@
 import { Button } from "@chakra-ui/button";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Heading, Text } from "@chakra-ui/layout";
+import { Box, Text } from "@chakra-ui/layout";
 import { useColorModeValue } from "@chakra-ui/system";
 import { useState } from "react";
 import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
-import { usePoolData, usePools } from "../../hooks/usePools";
+import {
+  usePoolsOffchainData,
+  usePools,
+  PoolOffchainDataProvider,
+} from "../../hooks/usePools";
+import { AnimatedBox } from "../misc";
 import { ResponsiveGrid } from "../misc/ResponsiveGrid";
 
 const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
-  const { data, error } = usePoolData(pool);
+  const offchainData = usePoolsOffchainData();
   const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
+  const metadata = offchainData?.find(
+    (data) => data.hash === pool.metadataHash
+  );
 
-  if (!data || error) return null;
+  if (!metadata) return null;
 
   return (
-    <Box
+    <AnimatedBox
       backdropFilter="blur(6px)"
       bgColor={backdropColor}
       p="8"
@@ -22,29 +30,21 @@ const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
       display="flex"
       flexDir="column"
       justifyContent="space-between"
+      as="a"
+      href={metadata.json.homepage}
     >
-      {data.retired ? (
-        <>
-          <a
-            css={{ wordWrap: "break-word", maxWidth: 200 }}
-            href={pool.url ?? ""}
-          >
-            {pool.id}
-          </a>
-          <Text color="red.400">This pool is retired</Text>
-        </>
-      ) : (
+      {
         <>
           <Box>
             <Text size="lg" fontWeight="bold">
-              {data.name}
+              {metadata.json.name}
             </Text>
-            <Text>{data.ticker}</Text>
+            <Text>{metadata.json.ticker}</Text>
           </Box>
-          <Text>{data.description}</Text>
+          <Text>{metadata.json.description}</Text>
         </>
-      )}
-    </Box>
+      }
+    </AnimatedBox>
   );
 };
 
@@ -90,8 +90,10 @@ export const Pools = () => {
 
 export const Staking = () => {
   return (
-    <Box w="100%">
-      <Pools />
-    </Box>
+    <PoolOffchainDataProvider>
+      <Box w="100%">
+        <Pools />
+      </Box>
+    </PoolOffchainDataProvider>
   );
 };

@@ -9,22 +9,28 @@
 
 export interface GetPools_stakePools_retirements {
   __typename: "StakePoolRetirement";
-  inEffectFrom: number;
+  inEffectFrom: number | null;
 }
 
 export interface GetPools_stakePools {
   __typename: "StakePool";
-  fixedCost: string;
-  hash: any;
-  id: any;
-  pledge: string;
+  fixedCost: any | null;
+  hash: any | null;
+  id: string | null;
+  pledge: any | null;
   url: string | null;
   metadataHash: any | null;
-  retirements: (GetPools_stakePools_retirements | null)[] | null;
+  /**
+   * An array relationship
+   */
+  retirements: GetPools_stakePools_retirements[];
 }
 
 export interface GetPools {
-  stakePools: (GetPools_stakePools | null)[] | null;
+  /**
+   * fetch data from the table: "StakePool"
+   */
+  stakePools: GetPools_stakePools[];
 }
 
 export interface GetPoolsVariables {

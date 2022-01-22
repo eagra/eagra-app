@@ -24,7 +24,6 @@ import { noop } from "@chakra-ui/utils";
 import { CustomIcon } from "../misc/CustomIcons";
 
 export const Navbar = () => {
-  // const { cardano } = useCardano();
   const { isMobile } = useScreenSize();
 
   const [expanded, setExpanded] = useState(!isMobile);
@@ -39,13 +38,12 @@ export const Navbar = () => {
   useEffect(() => {
     if (isMobile) return setExpanded(false);
     setExpanded(true);
-  }, [isMobile])
+  }, [isMobile]);
 
   const { toggleColorMode, colorMode } = useColorMode();
   const bgColor = useColorModeValue("whiteAlpha.600", "blackAlpha.600");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const logoBgColor = useColorModeValue("gray.800", "transparent");
-
 
   return (
     <AnimatedBox
@@ -95,6 +93,7 @@ export const Navbar = () => {
             animate={{ left: expanded ? 180 : 270 }}
             position="absolute"
             top="4"
+            shadow="md"
           >
             {expanded ? <ArrowBackIcon /> : <HamburgerIcon />}
           </AnimatedButton>
@@ -123,8 +122,13 @@ export const Navbar = () => {
           borderRadius="full"
           width="46px"
           height="46px"
+          shadow="md"
         >
-          {colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+          {colorMode === "dark" ? (
+            <SunIcon color="yellow.400" />
+          ) : (
+            <MoonIcon color="skyblue" />
+          )}
         </Button>
       </Box>
     </AnimatedBox>

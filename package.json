@@ -7,7 +7,7 @@
     "build:prod": "NODE_ENV=production node .esbuild/build --minify --analyze",
     "watch": "node .esbuild/watch",
     "typecheck": "tsc --noEmit",
-    "graphql:schema:download": "apollo schema:download --endpoint=https://graphql-api.mainnet.dandelion.link src/graphql/schema.json",
+    "graphql:schema:download": "apollo schema:download --endpoint=https://hasura-testnet.nstankov.com/v1/graphql src/graphql/schema.json",
     "graphql:types:generate": "apollo codegen:generate --localSchemaFile=src/graphql/schema.json --target=typescript"
   },
   "dependencies": {

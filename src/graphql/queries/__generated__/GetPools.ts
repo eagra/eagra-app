@@ -12,18 +12,38 @@ export interface GetPools_stakePools_retirements {
   inEffectFrom: number | null;
 }
 
+export interface GetPools_stakePools_activeStake {
+  __typename: "ActiveStake";
+  amount: any | null;
+}
+
+export interface GetPools_stakePools_rewards {
+  __typename: "Reward";
+  amount: any | null;
+  earnedInEpochNo: any | null;
+  type: any | null;
+}
+
 export interface GetPools_stakePools {
   __typename: "StakePool";
-  fixedCost: any | null;
   hash: any | null;
   id: string | null;
   pledge: any | null;
-  url: string | null;
   metadataHash: any | null;
   /**
    * An array relationship
    */
   retirements: GetPools_stakePools_retirements[];
+  /**
+   * An array relationship
+   */
+  activeStake: GetPools_stakePools_activeStake[];
+  /**
+   * An array relationship
+   */
+  rewards: GetPools_stakePools_rewards[];
+  fixedCost: any | null;
+  margin: any | null;
 }
 
 export interface GetPools {

@@ -25,23 +25,24 @@ export const Dashboard = () => {
       width="100vw"
       display="flex"
       height="100vh"
-      css={{ transition: "background 0.8s" }}
       overflow="hidden"
+      css={{ transition: "background 0.8s" }}
     >
       <Box ref={$p5} position="absolute" top="0" left="0" />
       <Navbar />
       <Box
         as="main"
         p={isMobile ? 6 : 12}
+        paddingBottom="0"
         flex="1"
         position="relative"
         display="flex"
         flexDir="column"
         alignItems="flex-start"
-        overflowY="scroll"
+        height="100%"
       >
         <Header />
-        <Box marginTop="12" w="100%">
+        <Box marginTop="12" w="100%" flex="1" overflow="hidden">
           <Outlet />
         </Box>
       </Box>

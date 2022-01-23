@@ -6,7 +6,7 @@ import { Connection } from "../Connection/Connection";
 
 export const Header = () => {
   const gradient = useColorModeValue(
-    "radial-gradient(circle at top left, #f5db53 15%, #f58833 15% 55%, #cd66cb 55% 100%)",
+    "radial-gradient(circle at top left, #f5db53 15%, #f58833 15% 55%, #dd339b 55% 100%)",
     "radial-gradient(circle at top left, #dd339b 15%, #ab33cb 15% 55%, #1111ff 55% 100%)"
   );
 

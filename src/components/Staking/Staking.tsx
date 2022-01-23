@@ -1,99 +1,22 @@
-import { Button } from "@chakra-ui/button";
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Text } from "@chakra-ui/layout";
-import { useColorModeValue } from "@chakra-ui/system";
+import { Box } from "@chakra-ui/layout";
 import { useState } from "react";
-import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
-import {
-  usePoolsOffchainData,
-  usePools,
-  PoolOffchainDataProvider,
-} from "../../hooks/usePools";
-import { AnimatedBox } from "../misc";
-import { ResponsiveGrid } from "../misc/ResponsiveGrid";
-
-const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
-  const offchainData = usePoolsOffchainData();
-  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
-  const metadata = offchainData?.find(
-    (data) => data.hash === pool.metadataHash
-  );
-
-  if (!metadata) return null;
-
-  return (
-    <AnimatedBox
-      backdropFilter="blur(6px)"
-      bgColor={backdropColor}
-      p="8"
-      borderRadius="lg"
-      display="flex"
-      flexDir="column"
-      justifyContent="space-between"
-      as="a"
-      href={metadata.json.homepage}
-    >
-      {
-        <>
-          <Box>
-            <Text size="lg" fontWeight="bold">
-              {metadata.json.name}
-            </Text>
-            <Text>{metadata.json.ticker}</Text>
-          </Box>
-          <Text>{metadata.json.description}</Text>
-        </>
-      }
-    </AnimatedBox>
-  );
-};
-
-export const Pools = () => {
-  const [page, setPage] = useState(1);
-  const { pools, isValidating, error } = usePools(page - 1, 24);
-
-  // TODO refactor this shit
-  let poolComponent;
-  if (isValidating) {
-    poolComponent = <Text>Loading...</Text>;
-  } else if (error || !pools || pools.length === 0) {
-    poolComponent = <Text>Error</Text>;
-  } else {
-    poolComponent = (
-      <ResponsiveGrid>
-        {pools?.map((pool) => {
-          if (!pool) return null;
-          return <Pool pool={pool} key={pool.id} />;
-        })}
-      </ResponsiveGrid>
-    );
-  }
-  // end TODO
-
-  return (
-    <Box marginTop="8">
-      {poolComponent}
-      <Box d="flex" flexDir="row" marginTop="4" alignItems="center">
-        <Button onClick={() => setPage((currentPage) => currentPage - 1)}>
-          <ArrowBackIcon />
-        </Button>
-        <Text marginLeft="2" marginRight="2">
-          {page}
-        </Text>
-        <Button onClick={() => setPage((currentPage) => currentPage + 1)}>
-          <ArrowForwardIcon />
-        </Button>
-      </Box>
-    </Box>
-  );
-};
+import { PoolOffchainDataProvider } from "../../hooks/usePools";
+import { ControlPanel } from "./ControlPanel/ControlPanel";
+import { PageSwitcher } from "./ControlPanel/PageSwitcher";
+import { PoolList } from "./PoolList";
 
 export const Staking = () => {
+  const [page, setPage] = useState(1);
   return (
     <PoolOffchainDataProvider>
-      <Box w="100%">
-        <Pools />
-      </Box>
+      <>
+        <ControlPanel>
+          <PageSwitcher page={page} setPage={setPage} />
+        </ControlPanel>
+        <Box w="100%" maxHeight="100%" overflowY="scroll" marginTop="4">
+          <PoolList page={page} />
+        </Box>
+      </>
     </PoolOffchainDataProvider>
   );
 };

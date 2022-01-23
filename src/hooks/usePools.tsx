@@ -14,7 +14,7 @@ const graphqlUrl = // "https://graphql-testnet.nstankov.com/",
   "https://hasura-testnet.nstankov.com/v1/graphql";
 
 export const usePools = (pageIndex: number, limit = 20) => {
-  const { data, isValidating, error } = useSWR<GetPools>(
+  const { data, isValidating, error, mutate } = useSWR<GetPools>(
     [graphqlUrl, GET_POOLS, { limit, offset: limit * pageIndex }],
     graphqlFetcher,
     {
@@ -27,6 +27,7 @@ export const usePools = (pageIndex: number, limit = 20) => {
     pools: data?.stakePools,
     isValidating,
     error,
+    retry: mutate,
   };
 };
 
@@ -60,9 +61,9 @@ export const PoolOffchainDataProvider = ({
     }
   );
 
-  if (isValidating) return <Text>Loading...</Text>;
+  // TODO add a global loading indicator
   if (error) return <Text>Error retrieving context</Text>;
-  if (!data && !isValidating) return null;
+  if (!data) return null;
 
   return (
     <PoolOffchainDataContext.Provider value={data?.pool_offline_data}>

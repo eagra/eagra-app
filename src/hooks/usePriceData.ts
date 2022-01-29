@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import { defaultFetcher } from "../utils/fetchers";
+import { useStore } from "./store/useStore";
 
 type PriceData = {
   cardano: {
@@ -8,21 +9,27 @@ type PriceData = {
   };
 };
 
+// https://api.coingecko.com/api/v3/simple/price?ids=cardano&vs_currencies=eur,usd
+
+// https://api.coingecko.com/api/v3/coins/cardano/market_chart?id=cardano&vs_currency=eur&days=90
+
+const API_URL =
+  "https://api.coingecko.com/api/v3/simple/price?ids=cardano&vs_currencies=eur,usd";
+
 export const usePriceData = () => {
-  const url =
-    "https://api.coingecko.com/api/v3/simple/price?ids=cardano&vs_currencies=eur,usd";
-  return useSWR<PriceData>(url, defaultFetcher, {
+  return useSWR<PriceData>(API_URL, defaultFetcher, {
     revalidateOnFocus: false,
     shouldRetryOnError: false,
   });
 };
 
-export const usePrice = (currency: keyof PriceData['cardano']) => {
+export const usePrice = () => {
+  const baseCurrency = useStore((state) => state.baseCurrency);
   const { data, isValidating, error } = usePriceData();
 
   return {
     error: !!error,
     loading: isValidating,
-    price: data?.cardano[currency],
+    price: data?.cardano[baseCurrency],
   };
 };

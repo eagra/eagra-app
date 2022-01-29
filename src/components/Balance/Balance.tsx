@@ -16,14 +16,19 @@ import BigNumber from "bignumber.js";
 import { usePrice } from "../../hooks/usePriceData";
 import { useAddresses } from "../../hooks/useAddresses";
 import { Transactions } from "./Transactions/Transactions";
+import { useStore } from "../../hooks/store/useStore";
 
 export const Balance = () => {
   const { cardano } = useCardano();
-  const rewardAddress = useRewardAddress();
   const { unused } = useAddresses();
+  const rewardAddress = useRewardAddress();
 
-  const [baseCurrency, setBaseCurrency] = useState<"eur" | "usd">("eur");
-  const { price } = usePrice(baseCurrency);
+  const [baseCurrency, toggle] = useStore((state) => [
+    state.baseCurrency,
+    state.toggle,
+  ]);
+  
+  const { price } = usePrice();
 
   const [balance, setBalance] = useState(new BigNumber(0));
   const [collateral, setCollateral] = useState(new BigNumber(0));
@@ -86,16 +91,7 @@ export const Balance = () => {
             width="80px"
           >
             <Text>{currencySymbol("eur")}</Text>
-            <Switch
-              checked={baseCurrency === "eur"}
-              onChange={() => {
-                if (baseCurrency === "usd") {
-                  return setBaseCurrency("eur");
-                }
-
-                setBaseCurrency("usd");
-              }}
-            />
+            <Switch checked={baseCurrency === "eur"} onChange={toggle} />
             <Text>{currencySymbol("usd")}</Text>
           </Box>
 

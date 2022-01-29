@@ -31,9 +31,11 @@ export const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
     >
       <Box bgColor={bgColor} p="4" flex="1">
         <Heading as="h2" size="md" fontWeight="bold" paddingBottom="4">
-          {metadata.json.name}{" "}
+          [{metadata.json.ticker}]{" "}
+          <Text fontWeight="semibold" as="span">
+            {metadata.json.name}
+          </Text>{" "}
         </Heading>
-        <Text>{metadata.json.ticker}</Text>
         <Text>
           Active Stake: {currencySymbol("ada")}
           {pool.activeStake[0]

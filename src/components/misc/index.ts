@@ -1,2 +1,2 @@
-export * from "./AnimatedBox";
-export * from "./AnimatedButton";
+export * from './AnimatedBox';
+export * from './AnimatedButton';

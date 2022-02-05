@@ -10,7 +10,7 @@
       "ES2020",
       "DOM"
     ] /* Specify library files to be included in the compilation. */,
-    "allowJs": false,                             /* Allow javascript files to be compiled. */
+    "allowJs": false /* Allow javascript files to be compiled. */,
     "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', 'react', 'react-jsx' or 'react-jsxdev'. */,
     "jsxImportSource": "@emotion/react",
     // "declaration": true,                         /* Generates corresponding '.d.ts' file. */
@@ -72,5 +72,6 @@
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
-  "include": ["./src", "index.d.ts"]
+  "include": ["./src", "index.d.ts"],
+  "exclude": ["./node_modules"]
 }

@@ -2,11 +2,11 @@ import {
   TransactionUnspentOutput,
   min_ada_required,
   BigNum,
-} from "@emurgo/cardano-serialization-lib-browser";
-import BigNumber from "bignumber.js";
-import { Serializer } from "..";
-import { Cbor, FullApi, WalletApi } from "../injected";
-import { valueToLovelace } from "../utils";
+} from '@emurgo/cardano-serialization-lib-browser';
+import BigNumber from 'bignumber.js';
+import { Serializer } from '..';
+import { Cbor, FullApi, WalletApi } from '../injected';
+import { valueToLovelace } from '../utils';
 
 export const MIN_UTXO = 1_000_000;
 export type CardanoApi = WalletApi & { fullApi: FullApi };
@@ -48,7 +48,7 @@ export class Cardano {
       .hexToAddress(rewardAddressRaw)
       .to_bech32();
 
-    if (!rewardAddress) throw Error("could not get reward address");
+    if (!rewardAddress) throw Error('could not get reward address');
 
     return rewardAddress;
   };
@@ -62,7 +62,8 @@ export class Cardano {
   getCollateral = async () => {
     if (
       !this.wallet.fullApi.experimental ||
-      !this.wallet.fullApi.experimental.getCollateral
+      !this.wallet.fullApi.experimental.getCollateral ||
+      typeof this.wallet.fullApi.experimental.getCollateral !== 'function'
     ) {
       return new BigNumber(0);
     }

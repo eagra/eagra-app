@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import { GET_TRANSACTIONS } from "../graphql/queries/transactions";
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
+import { GET_TRANSACTIONS } from '../graphql/queries/transactions';
 import {
   GetTransactions,
   GetTransactions_transactions,
   GetTransactions_transactions_inputs,
   GetTransactions_transactions_outputs,
-} from "../graphql/queries/__generated__/GetTransactions";
-import { graphqlFetcher } from "../utils/fetchers";
-import { useAddresses } from "./useAddresses";
+} from '../graphql/queries/__generated__/GetTransactions';
+import { graphqlFetcher } from '../utils/fetchers';
+import { useAddresses } from './useAddresses';
 
 export type TransactionsByType = {
   inputs: GetTransactions_transactions_inputs[];
@@ -24,8 +24,8 @@ const processTransactions = (txs: GetTransactions_transactions[]) => {
   ) => {
     const { inputs, outputs } = curr;
     return {
-      inputs: [...acc.inputs, ...(inputs as TransactionsByType["inputs"])],
-      outputs: [...acc.outputs, ...(outputs as TransactionsByType["outputs"])],
+      inputs: [...acc.inputs, ...(inputs as TransactionsByType['inputs'])],
+      outputs: [...acc.outputs, ...(outputs as TransactionsByType['outputs'])],
     };
   };
 
@@ -42,11 +42,11 @@ export const useTransactions = (pageIndex: number, limit = 10) => {
   const { data, isValidating, error } = useSWR<GetTransactions>(
     addresses?.length > 0
       ? [
-          // "https://graphql-testnet.nstankov.com/",
-          "https://graphql-api.mainnet.dandelion.link/",
-          GET_TRANSACTIONS,
-          { addresses, limit, offset: limit * pageIndex },
-        ]
+        // "https://graphql-testnet.nstankov.com/",
+        'https://graphql-api.mainnet.dandelion.link/',
+        GET_TRANSACTIONS,
+        { addresses, limit, offset: limit * pageIndex },
+      ]
       : null,
     graphqlFetcher,
     {

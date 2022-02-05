@@ -1,21 +1,21 @@
-import { Box } from "@chakra-ui/layout";
-import { Navbar } from "../Navbar/Navbar";
-import { Outlet } from "react-router-dom";
-import { Connection } from "./Connection/Connection";
-import { useColorModeValue } from "@chakra-ui/color-mode";
-import { RefObject, useEffect, useRef } from "react";
-import { stars } from "../../sketches";
-import { Header } from "./Header/Header";
-import { useScreenSize } from "../../hooks/useScreenSize";
+import { Box } from '@chakra-ui/layout';
+import { Navbar } from '../Navbar/Navbar';
+import { Outlet } from 'react-router-dom';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { useEffect, useRef } from 'react';
+import { stars } from '../../sketches';
+import { Header } from './Header/Header';
+import { useScreenSize } from '../../hooks/useScreenSize';
+import p5 from 'p5';
 
 export const Dashboard = () => {
-  const bgColor = useColorModeValue("white", "gray.900");
+  const bgColor = useColorModeValue('white', 'gray.900');
   const { isMobile } = useScreenSize();
 
-  const $p5 = useRef() as RefObject<HTMLDivElement>;
+  const $p5 = useRef();
 
   useEffect(() => {
-    const p5 = require("p5");
+    if (!$p5.current) return;
     new p5(stars, $p5.current);
   }, []);
 
@@ -26,9 +26,9 @@ export const Dashboard = () => {
       display="flex"
       height="100vh"
       overflow="hidden"
-      css={{ transition: "background 0.8s" }}
+      css={{ transition: 'background 0.8s' }}
     >
-      <Box ref={$p5} position="absolute" top="0" left="0" />
+      <Box ref={$p5 as any} position="absolute" top="0" left="0" />
       <Navbar />
       <Box
         as="main"

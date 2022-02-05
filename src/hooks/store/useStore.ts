@@ -1,24 +1,24 @@
-import create, { SetState } from "zustand";
-import { combine } from "zustand/middleware";
+import create, { SetState } from 'zustand';
+import { combine } from 'zustand/middleware';
 
 type State = {
-  baseCurrency: "usd" | "eur";
+  baseCurrency: 'usd' | 'eur';
 };
 
 const state: State = {
-  baseCurrency: "eur",
+  baseCurrency: 'eur',
 };
 
 const setters = (set: SetState<typeof state>) => ({
   toggle: () =>
     set((state) => {
-      if (state.baseCurrency === "usd") {
+      if (state.baseCurrency === 'usd') {
         return {
-          baseCurrency: "eur",
+          baseCurrency: 'eur',
         };
       }
 
-      return { baseCurrency: "usd" };
+      return { baseCurrency: 'usd' };
     }),
 });
 

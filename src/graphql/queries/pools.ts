@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const GET_POOLS = gql`
   query GetPools($limit: Int!, $offset: Int!) {

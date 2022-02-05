@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box } from '@chakra-ui/react';
 
 export const ControlPanel = ({ children }: { children: JSX.Element }) => {
   return (

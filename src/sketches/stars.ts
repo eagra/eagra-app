@@ -1,4 +1,4 @@
-import p5 from "p5";
+import p5 from 'p5';
 
 class Dot {
   public saturationPercentage: number;
@@ -140,7 +140,7 @@ export const stars = (ctx: p5) => {
   };
 
   ctx.draw = () => {
-    ctx.clear();
+    ctx.clear(0, 0, 0, 0);
     drawDots(DOTS, ctx);
   };
 

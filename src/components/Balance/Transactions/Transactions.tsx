@@ -1,33 +1,33 @@
-import { Button } from "@chakra-ui/button";
-import { useColorModeValue } from "@chakra-ui/color-mode";
+import { Button } from '@chakra-ui/button';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 import {
   ArrowDownIcon,
   ArrowUpIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-} from "@chakra-ui/icons";
-import { Box, Heading, Text } from "@chakra-ui/layout";
-import BigNumber from "bignumber.js";
-import { useState } from "react";
+} from '@chakra-ui/icons';
+import { Box, Heading, Text } from '@chakra-ui/layout';
+import BigNumber from 'bignumber.js';
+import { useState } from 'react';
 import {
   GetTransactions_transactions_inputs,
   GetTransactions_transactions_outputs,
-} from "../../../graphql/queries/__generated__/GetTransactions";
-import { useTransactions } from "../../../hooks/useTransactions";
-import { currencySymbol, lovelaceToAda, Serializer } from "../../../lib";
+} from '../../../graphql/queries/__generated__/GetTransactions';
+import { useTransactions } from '../../../hooks/useTransactions';
+import { currencySymbol, lovelaceToAda, Serializer } from '../../../lib';
 
 export const Transaction = ({
   tx,
   action,
 }: {
-  action: "Received" | "Sent";
+  action: 'Received' | 'Sent';
   tx:
     | GetTransactions_transactions_outputs
     | GetTransactions_transactions_inputs;
 }) => {
   const serializer = new Serializer();
 
-  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
+  const backdropColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.50');
 
   return (
     <Box
@@ -41,7 +41,7 @@ export const Transaction = ({
       width="100%"
     >
       <Box display="flex" justifyContent="flex-start" alignItems="center">
-        {action === "Sent" ? (
+        {action === 'Sent' ? (
           <ArrowUpIcon color="red.400" />
         ) : (
           <ArrowDownIcon color="teal.400" />
@@ -54,14 +54,14 @@ export const Transaction = ({
         {tx.txHash}
       </Text>
       <Text>
-        {currencySymbol("ada")}{" "}
+        {currencySymbol('ada')}{' '}
         {lovelaceToAda(new BigNumber(tx.value)).toFixed(2)}
       </Text>
       {tx.tokens &&
-        tx.tokens.map((token) => {
-          if (!token) return null;
+        tx.tokens.map((token, index) => {
+          if (!token || !token.asset) return null;
           return (
-            <Text>
+            <Text key={index}>
               {token.quantity} {serializer.hexToAscii(token.asset.assetName)}
             </Text>
           );

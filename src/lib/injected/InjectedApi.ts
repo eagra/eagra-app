@@ -4,7 +4,7 @@ import {
   TransactionUnspentOutput,
   TransactionWitnessSet,
   Value,
-} from "@emurgo/cardano-serialization-lib-browser";
+} from '@emurgo/cardano-serialization-lib-browser';
 
 /** LEGACY
  * 
@@ -60,15 +60,20 @@ window.cardano =  {
 }
 */
 
+export type InjectedWindow = Window & typeof globalThis & { cardano: InjectedApiType };
+
+// TODO this will need to be fixed.
+// Ideally, ideally we want to be able to tell what is going to be the output of Cbor through this type
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type Cbor<T> = string;
+
 export type Paginate = {
   page: number;
   limit: number;
 };
 
-export type Cbor<T> = string;
-
 export type WalletName = string;
-export type ExperimentalApi = Record<string, any>;
+export type ExperimentalApi = Record<string, unknown>;
 
 export type FullApi = {
   experimental: ExperimentalApi;
@@ -91,7 +96,7 @@ export type FullApi = {
   // TODO
   signData: (
     addr: Cbor<Address>,
-    sigStructure: Cbor<any>
+    sigStructure: Cbor<unknown>
   ) => Promise<Cbor<string>>;
 };
 
@@ -104,22 +109,24 @@ export type WalletApi = {
   experimental?: ExperimentalApi;
 }
 
-export type InjectedApiType = Record<WalletName, WalletApi>;
+export type InjectedApiType = Record<WalletName, WalletApi> | undefined;
 
 export class InjectedApi {
   injected: InjectedApiType;
 
   public constructor() {
-    this.injected = (window as any).cardano;
+    this.injected = (window as InjectedWindow).cardano;
   }
 
   public init = (walletKey: string): Promise<FullApi> => {
+    if (!this.injected) throw new Error('wallet not detected');
     const fullApi = this.injected[walletKey].enable();
     return fullApi;
   };
 
   public enabled = (): Promise<WalletApi | undefined> => {
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve, reject) => {
+      if (!this.injected) return reject('wallet not detected');
       Object.values(this.injected).find((wallet) => {
         // nami polluted top level cardano object
         if (!wallet.apiVersion) {

@@ -1,5 +1,5 @@
-import { useCardano } from "../../../hooks/useCardano";
-import { useAddresses } from "../../../hooks/useAddresses";
+import { useCardano } from '../../../hooks/useCardano';
+import { useAddresses } from '../../../hooks/useAddresses';
 import {
   Tooltip,
   Text,
@@ -16,12 +16,12 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-} from "@chakra-ui/react";
-import { CopyIcon } from "@chakra-ui/icons";
-import { useToast } from "@chakra-ui/react";
-import { InjectedApiType } from "../../../lib";
+} from '@chakra-ui/react';
+import { CopyIcon } from '@chakra-ui/icons';
+import { useToast } from '@chakra-ui/react';
+import { InjectedApiType } from '../../../lib';
 
-export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
+export const Connection = (props: PropsOf<ChakraComponent<'div'>>) => {
   const { injected, init, cardano } = useCardano();
   const { unused } = useAddresses();
 
@@ -30,21 +30,21 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
       await init(walletKey);
     } catch (err) {
       toast({
-        title: "Something went wrong",
+        title: 'Something went wrong',
         description:
-          "We could not connect to your wallet. Make sure that you accept the prompt from your wallet extension",
-        status: "error",
+          'We could not connect to your wallet. Make sure that you accept the prompt from your wallet extension',
+        status: 'error',
         duration: 6000,
         isClosable: true,
       });
 
-      throw new Error("could not connect");
+      throw new Error('could not connect');
     }
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
+  const backdropColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.50');
 
   const getWalletOptions = (injected: InjectedApiType | undefined) => {
     if (!injected) return null;
@@ -68,8 +68,8 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
     if (unused) {
       navigator.clipboard.writeText(unused[0]).then(() => {
         toast({
-          title: "Wallet address copied!",
-          status: "success",
+          title: 'Wallet address copied!',
+          status: 'success',
           duration: 3000,
           isClosable: true,
         });
@@ -89,7 +89,7 @@ export const Connection = (props: PropsOf<ChakraComponent<"div">>) => {
           alignItems="center"
         >
           <Text>
-            ✨ Wallet Connected{" "}
+            ✨ Wallet Connected{' '}
             <Tooltip label={unused[0]}>
               <CopyIcon cursor="pointer" onClick={copyToClipboard} />
             </Tooltip>

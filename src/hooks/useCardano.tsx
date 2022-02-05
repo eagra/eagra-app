@@ -1,26 +1,27 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { Cardano, InjectedApi, InjectedApiType, Serializer } from "../lib";
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { Cardano, InjectedApi, InjectedApiType, Serializer } from '../lib';
 
 const CardanoContext = createContext<{
   injected: InjectedApiType | undefined;
   cardano: Cardano | undefined;
   init: (walletName: string) => void;
   // refresh: () => void;
-}>({
-  injected: undefined,
-  cardano: undefined,
-  init: (_name) => console.log("not implemented here"),
-  // refresh: () => console.log("not implemented"),
-});
+    }>({
+      injected: undefined,
+      cardano: undefined,
+      init: (_name) => console.log('not implemented here'),
+      // refresh: () => console.log("not implemented"),
+    });
 
 export const useCardano = () => {
   return useContext(CardanoContext);
 };
 
 export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
-  const injectedApi = new InjectedApi();
-  const serializer = new Serializer();
   const [cardano, setCardano] = useState<Cardano | undefined>();
+  
+  const injectedApi = useMemo(() => new InjectedApi(), []);
+  const serializer = useMemo(() => new Serializer(), []);
 
   useEffect(() => {
     injectedApi.enabled().then(async (enabled) => {
@@ -35,10 +36,11 @@ export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
 
       setCardano(new Cardano(wallet, serializer));
     });
-  }, []);
+  }, [injectedApi, serializer]);
 
   const init = (walletKey: string) => {
     injectedApi.init(walletKey).then((fullApi) => {
+      if (!injectedApi.injected) throw new Error('wallet not detected');
       const wallet = {
         ...injectedApi.injected[walletKey],
         fullApi,

@@ -1,6 +1,6 @@
-import Icon, { IconProps } from "@chakra-ui/icon";
-import { Image } from "@chakra-ui/react";
-import { IconType } from "react-icons";
+import Icon, { IconProps } from '@chakra-ui/icon';
+import { Image } from '@chakra-ui/react';
+import { IconType } from 'react-icons';
 
 type CustomConstructorTypes =
   | {

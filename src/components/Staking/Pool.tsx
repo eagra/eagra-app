@@ -1,15 +1,15 @@
-import { useColorModeValue, Box, Heading, Text } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
-import { GetPools_stakePools } from "../../graphql/queries/__generated__/GetPools";
-import { usePoolsOffchainData } from "../../hooks/usePools";
-import { currencySymbol, lovelaceToAda } from "../../lib";
-import { AnimatedBox } from "../misc";
+import { useColorModeValue, Box, Heading, Text } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
+import { GetPools_stakePools } from '../../graphql/queries/__generated__/GetPools';
+import { usePoolsOffchainData } from '../../hooks/usePools';
+import { currencySymbol, lovelaceToAda } from '../../lib';
+import { AnimatedBox } from '../misc';
 
 export const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
   const offchainData = usePoolsOffchainData();
 
-  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
-  const bgColor = useColorModeValue("gray.200", "gray.800");
+  const backdropColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.50');
+  const bgColor = useColorModeValue('gray.200', 'gray.800');
 
   const metadata = offchainData?.find(
     (data) => data.hash === pool.metadataHash
@@ -31,21 +31,21 @@ export const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
     >
       <Box bgColor={bgColor} p="4" flex="1">
         <Heading as="h2" size="md" fontWeight="bold" paddingBottom="4">
-          [{metadata.json.ticker}]{" "}
+          [{metadata.json.ticker}]{' '}
           <Text fontWeight="semibold" as="span">
             {metadata.json.name}
-          </Text>{" "}
+          </Text>{' '}
         </Heading>
         <Text>
-          Active Stake: {currencySymbol("ada")}
+          Active Stake: {currencySymbol('ada')}
           {pool.activeStake[0]
             ? lovelaceToAda(new BigNumber(pool.activeStake[0].amount)).toFixed(
-                0
-              )
+              0
+            )
             : 0}
         </Text>
         <Text>
-          Pledge: {currencySymbol("ada")}
+          Pledge: {currencySymbol('ada')}
           {pool.pledge
             ? lovelaceToAda(new BigNumber(pool.pledge)).toString()
             : 0}
@@ -53,8 +53,8 @@ export const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
       </Box>
       <Box p="4">
         <Text>
-          Costs: {currencySymbol("ada")}
-          {lovelaceToAda(new BigNumber(pool.fixedCost)).toString()} +{" "}
+          Costs: {currencySymbol('ada')}
+          {lovelaceToAda(new BigNumber(pool.fixedCost)).toString()} +{' '}
           {Math.round(pool.margin * 100)}%
         </Text>
       </Box>

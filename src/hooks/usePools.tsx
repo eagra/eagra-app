@@ -1,17 +1,17 @@
-import { Text } from "@chakra-ui/react";
-import { createContext, useContext } from "react";
-import useSWR from "swr";
-import { GET_POOLS, GET_POOL_OFFCHAIN_DATA } from "../graphql/queries/pools";
-import { GetPools } from "../graphql/queries/__generated__/GetPools";
+import { Text } from '@chakra-ui/react';
+import { createContext, useContext } from 'react';
+import useSWR from 'swr';
+import { GET_POOLS, GET_POOL_OFFCHAIN_DATA } from '../graphql/queries/pools';
+import { GetPools } from '../graphql/queries/__generated__/GetPools';
 import {
   PoolOffchainData,
   PoolOffchainData_pool_offline_data,
-} from "../graphql/queries/__generated__/PoolOffchainData";
-import { graphqlFetcher } from "../utils/fetchers";
+} from '../graphql/queries/__generated__/PoolOffchainData';
+import { graphqlFetcher } from '../utils/fetchers';
 
 const graphqlUrl = // "https://graphql-testnet.nstankov.com/",
   // "https://graphql-api.testnet.dandelion.link/",
-  "https://hasura-testnet.nstankov.com/v1/graphql";
+  'https://hasura-testnet.nstankov.com/v1/graphql';
 
 export const usePools = (pageIndex: number, limit = 20) => {
   const { data, isValidating, error, mutate } = useSWR<GetPools>(
@@ -33,7 +33,7 @@ export const usePools = (pageIndex: number, limit = 20) => {
 
 type PoolOffchainDataType = Omit<
   PoolOffchainData_pool_offline_data,
-  "json" | "__typename"
+  'json' | '__typename'
 > & {
   json: {
     description: string;
@@ -52,7 +52,7 @@ export const PoolOffchainDataProvider = ({
 }: {
   children: JSX.Element;
 }) => {
-  const { data, isValidating, error } = useSWR<PoolOffchainData>(
+  const { data, error } = useSWR<PoolOffchainData>(
     [graphqlUrl, GET_POOL_OFFCHAIN_DATA],
     graphqlFetcher,
     {

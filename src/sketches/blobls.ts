@@ -1,4 +1,4 @@
-import p5 from "p5";
+import p5 from 'p5';
 
 class Blob {
   color: p5.Color;
@@ -53,7 +53,7 @@ class Blob {
     ctx.fill(this.color);
     ctx.beginShape();
     for (let i = 0; i < ctx.TWO_PI; i += 0.01) {
-      let xOff = ctx.cos(i) + 1;
+      const xOff = ctx.cos(i) + 1;
       const r = ctx.map(ctx.noise(xOff, this.noisePhase), 0, 1, 100, 200);
       const x = r * ctx.cos(i);
       const y = r * ctx.sin(i);
@@ -81,7 +81,7 @@ export const blobs = (ctx: p5) => {
   };
 
   ctx.draw = () => {
-    ctx.clear();
+    ctx.clear(0, 0, 0, 0);
     blobList.map(drawBlob);
   };
 };

@@ -1,7 +1,7 @@
-import { Box, Button, Heading, Skeleton } from "@chakra-ui/react";
-import { usePools } from "../../hooks/usePools";
-import { ResponsiveGrid } from "../misc/ResponsiveGrid";
-import { Pool } from "./Pool";
+import { Box, Button, Heading, Skeleton } from '@chakra-ui/react';
+import { usePools } from '../../hooks/usePools';
+import { ResponsiveGrid } from '../misc/ResponsiveGrid';
+import { Pool } from './Pool';
 
 export const PoolList = ({ page }: { page: number }) => {
   const POOLS_PER_PAGE = 100;
@@ -24,12 +24,12 @@ export const PoolList = ({ page }: { page: number }) => {
       <ResponsiveGrid>
         {pools && !isValidating
           ? pools.map((pool) => {
-              if (!pool) return null;
-              return <Pool pool={pool} key={pool.id} />;
-            })
+            if (!pool) return null;
+            return <Pool pool={pool} key={pool.id} />;
+          })
           : [...Array(POOLS_PER_PAGE).keys()].map((_, index) => {
-              return <Skeleton height="200px" borderRadius="lg" key={index} />;
-            })}
+            return <Skeleton height="200px" borderRadius="lg" key={index} />;
+          })}
       </ResponsiveGrid>
     </Box>
   );

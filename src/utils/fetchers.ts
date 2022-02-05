@@ -1,4 +1,4 @@
-import { request } from "graphql-request";
+import { request } from 'graphql-request';
 
 export const defaultFetcher = (url: string) =>
   fetch(url).then((res) => res.json());

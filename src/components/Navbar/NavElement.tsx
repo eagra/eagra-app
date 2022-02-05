@@ -1,7 +1,7 @@
-import { Button } from "@chakra-ui/react";
-import { Link, useMatch } from "react-router-dom";
-import { CustomIcon, CustomIconProps } from "../misc/CustomIcons";
-import { IconType } from "react-icons";
+import { Button } from '@chakra-ui/react';
+import { Link, useMatch } from 'react-router-dom';
+import { CustomIcon, CustomIconProps } from '../misc/CustomIcons';
+import { IconType } from 'react-icons';
 
 export const NavElement = ({
   link,

@@ -1,6 +1,6 @@
-declare module "*.svg" {
-  const content: any;
+declare module '*.svg' {
+  const content: string;
   export default content;
 }
 
-declare module "Buffer";
+declare module 'Buffer';

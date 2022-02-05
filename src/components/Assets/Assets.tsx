@@ -1,17 +1,16 @@
-import useSWR from "swr";
-import { useRewardAddress } from "../../hooks/useRewardAddress";
-import { defaultFetcher } from "../../utils/fetchers";
+import useSWR from 'swr';
+import { useRewardAddress } from '../../hooks/useRewardAddress';
+import { defaultFetcher } from '../../utils/fetchers';
 import {
   Tooltip,
   Box,
-  Heading,
   Text,
   useColorModeValue,
   Image,
-} from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
-import { ResponsiveGrid } from "../misc/ResponsiveGrid";
-import { Asset } from "../../lib";
+} from '@chakra-ui/react';
+import { InfoIcon } from '@chakra-ui/icons';
+import { ResponsiveGrid } from '../misc/ResponsiveGrid';
+import { Asset } from '../../lib';
 
 type WalletData = {
   addr: string;
@@ -25,17 +24,17 @@ type WalletData = {
   withdrawal: number;
 };
 
-const walletEndpoint = "https://pool.pm/wallet";
-const ipfsEndpoint = "https://infura-ipfs.io/ipfs";
+const walletEndpoint = 'https://pool.pm/wallet';
+const ipfsEndpoint = 'https://infura-ipfs.io/ipfs';
 
 const AssetComponent = ({ asset }: { asset: Asset }) => {
   const { quantity, name, policy, fingerprint, metadata } = asset;
-  const backdropColor = useColorModeValue("blackAlpha.100", "whiteAlpha.50");
+  const backdropColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.50');
 
   const image = metadata?.image as string | undefined;
   const imageUrl = image
-    ? image.startsWith("ipfs")
-      ? `${ipfsEndpoint}/${image.split("ipfs://")[1]}`
+    ? image.startsWith('ipfs')
+      ? `${ipfsEndpoint}/${image.split('ipfs://')[1]}`
       : image
     : null;
 
@@ -51,12 +50,12 @@ const AssetComponent = ({ asset }: { asset: Asset }) => {
           borderRadius="md"
           src={imageUrl}
           alt={`${name} token image`}
-          css={{ marginBottom: 16, width: "100%", height: "auto" }}
+          css={{ marginBottom: 16, width: '100%', height: 'auto' }}
         />
       )}
       <div>
         <Text>
-          {quantity} {name}{" "}
+          {quantity} {name}{' '}
           <Tooltip label={`PolicyId: ${policy}  Fingerprint: ${fingerprint}`}>
             <InfoIcon />
           </Tooltip>

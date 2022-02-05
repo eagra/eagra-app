@@ -1,6 +1,6 @@
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Button, Text } from "@chakra-ui/react";
-import { Dispatch, SetStateAction } from "react";
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { Box, Button, Text } from '@chakra-ui/react';
+import { Dispatch, SetStateAction } from 'react';
 
 export const PageSwitcher = ({
   page,

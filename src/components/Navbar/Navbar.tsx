@@ -1,27 +1,27 @@
-import { Box } from "@chakra-ui/layout";
-import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import logo from "../../assets/cardano-logo.svg";
+import { Box } from '@chakra-ui/layout';
+import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import logo from '../../assets/cardano-logo.svg';
 // import { useCardano } from "../../hooks/useCardano";
 import {
   Button,
   useColorMode,
   useColorModeValue,
   useOutsideClick,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 import {
   ArrowBackIcon,
   HamburgerIcon,
   MoonIcon,
   SunIcon,
-} from "@chakra-ui/icons";
-import { AnimatedBox, AnimatedButton } from "../misc";
-import { NavElement } from "./NavElement";
-import { TiChartArea, TiStarFullOutline } from "react-icons/ti";
-import { MdFavorite } from "react-icons/md";
-import { useScreenSize } from "../../hooks/useScreenSize";
-import { noop } from "@chakra-ui/utils";
-import { CustomIcon } from "../misc/CustomIcons";
+} from '@chakra-ui/icons';
+import { AnimatedBox, AnimatedButton } from '../misc';
+import { NavElement } from './NavElement';
+import { TiChartArea, TiStarFullOutline } from 'react-icons/ti';
+import { MdFavorite } from 'react-icons/md';
+import { useScreenSize } from '../../hooks/useScreenSize';
+import { noop } from '@chakra-ui/utils';
+import { CustomIcon } from '../misc/CustomIcons';
 
 export const Navbar = () => {
   const { isMobile } = useScreenSize();
@@ -41,9 +41,9 @@ export const Navbar = () => {
   }, [isMobile]);
 
   const { toggleColorMode, colorMode } = useColorMode();
-  const bgColor = useColorModeValue("whiteAlpha.600", "blackAlpha.600");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
-  const logoBgColor = useColorModeValue("gray.800", "transparent");
+  const bgColor = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const logoBgColor = useColorModeValue('gray.800', 'transparent');
 
   return (
     <AnimatedBox
@@ -58,7 +58,7 @@ export const Navbar = () => {
       height="100vh"
       flexShrink="0"
       animate={{ x: expanded ? 0 : -250, width: expanded ? 250 : 0 }}
-      position={isMobile ? "absolute" : "relative"}
+      position={isMobile ? 'absolute' : 'relative'}
       overflow="visible"
       borderRightColor={borderColor}
       borderRightWidth="1px"
@@ -67,7 +67,7 @@ export const Navbar = () => {
       flexDir="column"
       justifyContent="space-between"
       shadow="base"
-      css={{ transition: "background 1.2s" }}
+      css={{ transition: 'background 1.2s' }}
     >
       <>
         <Box
@@ -124,7 +124,7 @@ export const Navbar = () => {
           height="46px"
           shadow="md"
         >
-          {colorMode === "dark" ? (
+          {colorMode === 'dark' ? (
             <SunIcon color="yellow.400" />
           ) : (
             <MoonIcon color="skyblue" />

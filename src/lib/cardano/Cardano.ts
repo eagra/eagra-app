@@ -35,7 +35,10 @@ export class Cardano {
   };
 
   getUsedAddresses = async () => {
-    const rawAddresses = await this.wallet.fullApi.getUsedAddresses({limit: 10, page: 1});
+    const rawAddresses = await this.wallet.fullApi.getUsedAddresses({
+      limit: 10,
+      page: 1,
+    });
 
     return rawAddresses.map((rawAddress: string): string =>
       this.serializer.hexToAddress(rawAddress).to_bech32()

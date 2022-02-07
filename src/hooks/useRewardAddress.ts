@@ -8,11 +8,11 @@ export const useRewardAddress = () => {
   useEffect(() => {
     const handle = async () => {
       if (!cardano) return;
-  
+
       const rewardAddress = await cardano.getRewardAddress();
       setRewardAddress(rewardAddress);
     };
-    
+
     handle();
   }, [cardano]);
 

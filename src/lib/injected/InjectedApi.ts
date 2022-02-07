@@ -60,7 +60,8 @@ window.cardano =  {
 }
 */
 
-export type InjectedWindow = Window & typeof globalThis & { cardano: InjectedApiType };
+export type InjectedWindow = Window &
+  typeof globalThis & { cardano: InjectedApiType };
 
 // TODO this will need to be fixed.
 // Ideally, ideally we want to be able to tell what is going to be the output of Cbor through this type
@@ -107,7 +108,7 @@ export type WalletApi = {
   isEnabled: () => Promise<boolean>;
   enable: () => Promise<FullApi>;
   experimental?: ExperimentalApi;
-}
+};
 
 export type InjectedApiType = Record<WalletName, WalletApi> | undefined;
 

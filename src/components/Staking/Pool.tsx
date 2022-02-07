@@ -40,8 +40,8 @@ export const Pool = ({ pool }: { pool: GetPools_stakePools }) => {
           Active Stake: {currencySymbol('ada')}
           {pool.activeStake[0]
             ? lovelaceToAda(new BigNumber(pool.activeStake[0].amount)).toFixed(
-              0
-            )
+                0
+              )
             : 0}
         </Text>
         <Text>

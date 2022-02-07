@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useCardano } from '../../hooks/useCardano';
 import { InfoIcon } from '@chakra-ui/icons';
-import { Tooltip, Text, Box, useColorModeValue, Heading, Switch } from '@chakra-ui/react';
+import {
+  Tooltip,
+  Text,
+  Box,
+  useColorModeValue,
+  Heading,
+  Switch,
+} from '@chakra-ui/react';
 import { useRewardAddress } from '../../hooks/useRewardAddress';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Cardano, currencySymbol, lovelaceToAda } from '../../lib';
@@ -16,7 +23,10 @@ export const Balance = () => {
   const { unused } = useAddresses();
   const rewardAddress = useRewardAddress();
 
-  const [baseCurrency, toggle] = useStore((state) => [state.baseCurrency, state.toggle]);
+  const [baseCurrency, toggle] = useStore((state) => [
+    state.baseCurrency,
+    state.toggle,
+  ]);
 
   const { price } = usePrice();
 
@@ -36,7 +46,9 @@ export const Balance = () => {
       cardano.getLockedBalance(),
     ]);
 
-    const [total, collateral, locked] = balances.map((bal) => lovelaceToAda(bal));
+    const [total, collateral, locked] = balances.map((bal) =>
+      lovelaceToAda(bal)
+    );
 
     setBalance(total);
     setCollateral(collateral);
@@ -87,7 +99,12 @@ export const Balance = () => {
             Balance
           </Text>
           <Box display="flex" alignItems="flex-end" p="0">
-            <Text fontSize="4xl" fontWeight="bold" color={textHighlightColor} lineHeight="1">
+            <Text
+              fontSize="4xl"
+              fontWeight="bold"
+              color={textHighlightColor}
+              lineHeight="1"
+            >
               {currencySymbol('ada')}
               {balance.toFixed(2)}{' '}
             </Text>
@@ -115,8 +132,10 @@ export const Balance = () => {
             )}
             <Tooltip
               label={`+${currencySymbol('ada')}${collateral.toFixed(
-                2,
-              )} collateral and ${currencySymbol('ada')}${locked.toFixed(2)} locked with assets`}
+                2
+              )} collateral and ${currencySymbol('ada')}${locked.toFixed(
+                2
+              )} locked with assets`}
             >
               <InfoIcon />
             </Tooltip>
@@ -155,7 +174,13 @@ export const Balance = () => {
           <Box marginTop="4" width="100%" overflowX="auto">
             <Text>
               Reward Address:{' '}
-              <Text width="100%" as="span" display="inline-block" fontStyle="italic" p="2">
+              <Text
+                width="100%"
+                as="span"
+                display="inline-block"
+                fontStyle="italic"
+                p="2"
+              >
                 {rewardAddress}
               </Text>
             </Text>

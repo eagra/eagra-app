@@ -42,11 +42,11 @@ export const useTransactions = (pageIndex: number, limit = 10) => {
   const { data, isValidating, error } = useSWR<GetTransactions>(
     addresses?.length > 0
       ? [
-        // "https://graphql-testnet.nstankov.com/",
-        'https://graphql-api.mainnet.dandelion.link/',
-        GET_TRANSACTIONS,
-        { addresses, limit, offset: limit * pageIndex },
-      ]
+          // "https://graphql-testnet.nstankov.com/",
+          'https://graphql-api.mainnet.dandelion.link/',
+          GET_TRANSACTIONS,
+          { addresses, limit, offset: limit * pageIndex },
+        ]
       : null,
     graphqlFetcher,
     {

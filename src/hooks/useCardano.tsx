@@ -6,12 +6,12 @@ const CardanoContext = createContext<{
   cardano: Cardano | undefined;
   init: (walletName: string) => void;
   // refresh: () => void;
-    }>({
-      injected: undefined,
-      cardano: undefined,
-      init: (_name) => console.log('not implemented here'),
-      // refresh: () => console.log("not implemented"),
-    });
+}>({
+  injected: undefined,
+  cardano: undefined,
+  init: (_name) => console.log('not implemented here'),
+  // refresh: () => console.log("not implemented"),
+});
 
 export const useCardano = () => {
   return useContext(CardanoContext);
@@ -19,7 +19,7 @@ export const useCardano = () => {
 
 export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
   const [cardano, setCardano] = useState<Cardano | undefined>();
-  
+
   const injectedApi = useMemo(() => new InjectedApi(), []);
   const serializer = useMemo(() => new Serializer(), []);
 

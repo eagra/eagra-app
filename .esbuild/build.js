@@ -1,7 +1,7 @@
-const parsedArgs = require("yargs-parser")(process.argv.slice(2));
-const { build, analyzeMetafile } = require("esbuild");
+const parsedArgs = require('yargs-parser')(process.argv.slice(2));
+const { build, analyzeMetafile } = require('esbuild');
 
-const sharedConfig = require("./sharedConfig");
+const sharedConfig = require('./sharedConfig');
 
 const { _, analyze, minify } = parsedArgs;
 
@@ -10,6 +10,7 @@ build({
   treeShaking: true,
   metafile: analyze,
   minify,
+  logLevel: minify ? 'silent' : undefined,
 })
   .then((result) => {
     if (!result.metafile) return;
@@ -19,4 +20,3 @@ build({
     console.error(err);
     process.exit(1);
   });
-  

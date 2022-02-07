@@ -24,12 +24,12 @@ export const PoolList = ({ page }: { page: number }) => {
       <ResponsiveGrid>
         {pools && !isValidating
           ? pools.map((pool) => {
-            if (!pool) return null;
-            return <Pool pool={pool} key={pool.id} />;
-          })
+              if (!pool) return null;
+              return <Pool pool={pool} key={pool.id} />;
+            })
           : [...Array(POOLS_PER_PAGE).keys()].map((_, index) => {
-            return <Skeleton height="200px" borderRadius="lg" key={index} />;
-          })}
+              return <Skeleton height="200px" borderRadius="lg" key={index} />;
+            })}
       </ResponsiveGrid>
     </Box>
   );

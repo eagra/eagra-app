@@ -1,13 +1,7 @@
 import useSWR from 'swr';
 import { useRewardAddress } from '../../hooks/useRewardAddress';
 import { defaultFetcher } from '../../utils/fetchers';
-import {
-  Tooltip,
-  Box,
-  Text,
-  useColorModeValue,
-  Image,
-} from '@chakra-ui/react';
+import { Tooltip, Box, Text, useColorModeValue, Image } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import { ResponsiveGrid } from '../misc/ResponsiveGrid';
 import { Asset } from '../../lib';
@@ -96,9 +90,5 @@ export const Assets = () => {
   }
   // end TODO
 
-  return (
-    <Box w="100%">
-      {assetsComponent}
-    </Box>
-  );
+  return <Box w="100%">{assetsComponent}</Box>;
 };

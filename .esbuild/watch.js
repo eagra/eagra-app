@@ -1,5 +1,5 @@
-const { build, serve } = require("esbuild");
-const sharedConfig = require("./sharedConfig");
+const { build, serve } = require('esbuild');
+const sharedConfig = require('./sharedConfig');
 
 // build the source
 build({
@@ -35,4 +35,4 @@ build({
 }).catch(() => process.exit(1));
 
 // serve
-serve({ servedir: "./public", host: "localhost", port: 3000 }, {});
+serve({ servedir: './public', host: 'localhost', port: 3000 }, {});

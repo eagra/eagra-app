@@ -74,7 +74,7 @@ const calculateDotColor = (x: number, y: number, ctx: p5) => {
 };
 
 const createDot = (x: number, y: number, ctx: p5) => {
-  const SIZE = 6;
+  const SIZE = 8;
   const color = calculateDotColor(x, y, ctx);
   const position = { x, y };
 
@@ -112,7 +112,7 @@ const populateDots = (dots: Dot[], ctx: p5) => {
   // remove all elements, if any
   dots.splice(0, dots.length);
 
-  const rows = 18;
+  const rows = 10;
   const cols = rows * aspectRatio;
   const offsetX = windowWidth / (cols * 2) - 4;
   const offsetY = windowHeight / (rows * 2) - 4;
@@ -120,7 +120,7 @@ const populateDots = (dots: Dot[], ctx: p5) => {
   for (let i = 0; i < cols; i++) {
     for (let ii = 0; ii < rows; ii++) {
       const x = (windowWidth / cols) * i + offsetX;
-      const y = (windowHeight / rows) * ii + offsetY * (rows / ii);
+      const y = (windowHeight / rows) * ii + offsetY;
 
       dots.push(createDot(x, y, ctx));
     }

@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { defaultFetcher } from '../utils/fetchers';
-import { useStore } from './store/useStore';
+import { useBaseCurrency } from '../store';
 
 type PriceData = {
   cardano: {
@@ -24,7 +24,7 @@ export const usePriceData = () => {
 };
 
 export const usePrice = () => {
-  const baseCurrency = useStore((state) => state.baseCurrency);
+  const [baseCurrency] = useBaseCurrency();
   const { data, isValidating, error } = usePriceData();
 
   return {

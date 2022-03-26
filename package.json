@@ -25,6 +25,7 @@
     "framer-motion": "^4",
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
+    "jotai": "^1.6.1",
     "p5": "^1.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -32,8 +33,7 @@
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "recharts": "^2.1.8",
-    "swr": "^1.1.1",
-    "zustand": "^3.6.9"
+    "swr": "^1.1.1"
   },
   "devDependencies": {
     "@dauta/uniform": "^0.5.2",

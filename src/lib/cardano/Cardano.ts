@@ -47,11 +47,11 @@ export class Cardano {
 
   getRewardAddress = async (): Promise<string> => {
     const [rewardAddressRaw] = await this.wallet.fullApi.getRewardAddresses();
+    if (!rewardAddressRaw) throw Error('could not get reward address');
+
     const rewardAddress = this.serializer
       .hexToAddress(rewardAddressRaw)
       .to_bech32();
-
-    if (!rewardAddress) throw Error('could not get reward address');
 
     return rewardAddress;
   };

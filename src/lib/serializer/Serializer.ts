@@ -32,7 +32,10 @@ export class Serializer {
   bytesToHex = (bytes: Uint8Array) => {
     const hex: string[] = [];
     for (let i = 0; i < bytes.length; i++) {
-      const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+      const byte = bytes[i];
+      if (!byte) break;
+
+      const current = byte < 0 ? byte + 256 : byte;
       hex.push((current >>> 4).toString(16));
       hex.push((current & 0xf).toString(16));
     }

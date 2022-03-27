@@ -121,7 +121,11 @@ export class InjectedApi {
 
   public init = (walletKey: string): Promise<FullApi> => {
     if (!this.injected) throw new Error('wallet not detected');
-    const fullApi = this.injected[walletKey].enable();
+
+    const wallet = this.injected[walletKey];
+    if (!wallet) throw new Error('wallet not detected');
+
+    const fullApi = wallet.enable();
     return fullApi;
   };
 

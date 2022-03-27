@@ -8,14 +8,13 @@ import {
   PoolOffchainData_pool_offline_data,
 } from '../graphql/queries/__generated__/PoolOffchainData';
 import { graphqlFetcher } from '../utils/fetchers';
+import { getEnv } from '../utils/getEnv';
 
-const graphqlUrl = // "https://graphql-testnet.nstankov.com/",
-  // "https://graphql-api.testnet.dandelion.link/",
-  'https://hasura-testnet.nstankov.com/v1/graphql';
+const { GRAPHQL_URL } = getEnv();
 
 export const usePools = (pageIndex: number, limit = 20) => {
   const { data, isValidating, error, mutate } = useSWR<GetPools>(
-    [graphqlUrl, GET_POOLS, { limit, offset: limit * pageIndex }],
+    [GRAPHQL_URL, GET_POOLS, { limit, offset: limit * pageIndex }],
     graphqlFetcher,
     {
       revalidateOnFocus: false,
@@ -53,7 +52,7 @@ export const PoolOffchainDataProvider = ({
   children: JSX.Element;
 }) => {
   const { data, error } = useSWR<PoolOffchainData>(
-    [graphqlUrl, GET_POOL_OFFCHAIN_DATA],
+    [GRAPHQL_URL, GET_POOL_OFFCHAIN_DATA],
     graphqlFetcher,
     {
       revalidateOnFocus: false,

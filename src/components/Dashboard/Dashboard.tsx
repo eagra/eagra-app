@@ -42,7 +42,7 @@ export const Dashboard = () => {
         height="100%"
       >
         <Header />
-        <Box marginTop="12" w="100%" flex="1" overflow="hidden">
+        <Box marginTop="12" w="100%" flex="1" overflowY="auto">
           <Outlet />
         </Box>
       </Box>

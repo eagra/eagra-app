@@ -10,6 +10,10 @@ import {
 import { graphqlFetcher } from '../utils/fetchers';
 import { useAddresses } from './useAddresses';
 
+import { getEnv } from '../utils/getEnv';
+
+const { GRAPHQL_URL } = getEnv();
+
 export type TransactionsByType = {
   inputs: GetTransactions_transactions_inputs[];
   outputs: GetTransactions_transactions_outputs[];
@@ -42,8 +46,7 @@ export const useTransactions = (pageIndex: number, limit = 10) => {
   const { data, isValidating, error } = useSWR<GetTransactions>(
     addresses?.length > 0
       ? [
-          // "https://graphql-testnet.nstankov.com/",
-          'https://graphql-api.mainnet.dandelion.link/',
+          GRAPHQL_URL,
           GET_TRANSACTIONS,
           { addresses, limit, offset: limit * pageIndex },
         ]

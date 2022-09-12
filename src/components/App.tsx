@@ -6,10 +6,12 @@ import { Balance } from './Balance/Balance';
 import { Staking } from './Staking/Staking';
 import { Dashboard } from './Dashboard/Dashboard';
 import theme from '../utils/theme';
+import { Loader } from './Loader/Loader';
 
 const App = () => (
   <ChakraProvider theme={theme}>
     <CardanoProvider>
+      <Loader />
       <Router>
         <Routes>
           <Route path="/" element={<Dashboard />}>

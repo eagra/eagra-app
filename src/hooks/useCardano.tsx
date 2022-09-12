@@ -17,7 +17,11 @@ export const useCardano = () => {
   return useContext(CardanoContext);
 };
 
-export const CardanoProvider = ({ children }: { children: JSX.Element }) => {
+export const CardanoProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [cardano, setCardano] = useState<Cardano | undefined>();
 
   const injectedApi = useMemo(() => new InjectedApi(), []);

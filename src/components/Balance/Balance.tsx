@@ -17,6 +17,7 @@ import { usePrice } from '../../hooks/usePriceData';
 import { useAddresses } from '../../hooks/useAddresses';
 import { Transactions } from './Transactions/Transactions';
 import { useBaseCurrency, useToggleBaseCurrency } from '../../store';
+import { usePageLoading } from '../../store/pageLoading';
 
 export const Balance = () => {
   const { cardano } = useCardano();
@@ -32,6 +33,8 @@ export const Balance = () => {
   const [collateral, setCollateral] = useState(new BigNumber(0));
   const [locked, setLocked] = useState(new BigNumber(0));
   const [isBalanceLoading, setIsBalanceLoading] = useState(false);
+
+  usePageLoading(isBalanceLoading);
 
   const textHighlightColor = useColorModeValue('teal.500', 'teal.300');
   const backdropColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.50');
